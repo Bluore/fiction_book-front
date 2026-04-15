@@ -6,9 +6,9 @@
              </div>
              <div class="rank-box">
                  <ul>
-                     <li class="sort-option" @click="RefishRankListInfoByRead"><div class="sort-option-box">阅读</div></li>
-                     <li class="sort-option" @click="RefishRankListInfoByStar"><div class="sort-option-box">收藏</div></li>
-                     <li class="sort-option" @click="RefishRankListInfoByUpdate"><div class="sort-option-box">最新</div></li>
+                     <li class="sort-option" :class="{select: RankKeySelect===1}"  @click="RefishRankListInfoByRead"><div class="sort-option-box">阅读</div></li>
+                     <li class="sort-option" :class="{select: RankKeySelect===2}" @click="RefishRankListInfoByStar"><div class="sort-option-box">收藏</div></li>
+                     <li class="sort-option" :class="{select: RankKeySelect===3}" @click="RefishRankListInfoByUpdate"><div class="sort-option-box">最新</div></li>
                  </ul>
              </div>
          </div>
@@ -16,71 +16,36 @@
          <div class="rank-content">
            <!-- 置顶书籍 -->
             <div class="top-card">
-                <div class="top-card-left card">
+                <div class="top-card-left card" @click="OpenBookLinkByOrder(0)">
                     <div class="img-warp">
-                        <img src="https://picsum.photos/368/460?random=1" alt="测试书籍">
+                        <img :src="RankList[0]?.cover_image" alt="{{ RankList[0]?.name }}">
                     </div>
                     <div class="info-area">
-                        <p class="info-title">霸道开发者爱上我</p>
-                        <p class="info-desc">这本书籍介绍的是开发者沦陷进代码里面的故事</p>
-                        <p class="info-read">阅读量：4.2k</p>
-                        <p class="info-push">上架时间：2026-04-14</p>
+                        <p class="info-title">{{ RankList[0]?.name }}</p>
+                        <p class="info-desc">{{ RankList[0]?.description }}</p>
+                        <p class="info-read">阅读量：{{ RankList[0]?.browse_amount }}</p>
+                        <p class="info-push">上架时间：{{ RankList[0]?.created_at }}</p>
                     </div>
                 </div>
                 <div class="book-division"></div>
-                <div class="top-card-right card">
+                <div class="top-card-right card" @click="OpenBookLinkByOrder(1)">
                     <div class="img-warp">
-                        <img src="https://picsum.photos/368/460?random=2" alt="测试书籍">
+                        <img :src="RankList[1]?.cover_image" alt="{{ RankList[1]?.name }}">
                     </div>
                     <div class="info-area">
-                        <p class="info-title">需求？</p>
-                        <p class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是</p>
-                        <p class="info-read">阅读量：2.9k</p>
-                        <p class="info-push">上架时间：2026-04-13</p>
+                        <p class="info-title">{{ RankList[1]?.name }}</p>
+                        <p class="info-desc">{{ RankList[1]?.description }}</p>
+                        <p class="info-read">阅读量：{{ RankList[1]?.browse_amount }}</p>
+                        <p class="info-push">上架时间：{{ RankList[1]?.created_at }}</p>
                     </div>
                 </div>
             </div>
             <!-- 非置顶书籍 -->
             <ul class="rank-list">
-                <li class="rank-card">
-                    <span class="rank">3.</span>
-                    <span class="info-title">测试书籍3</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是这本书籍看似就是用来占位置的，但实际上确实就是</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">4.</span>
-                    <span class="info-title">测试书籍4</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">5.</span>
-                    <span class="info-title">测试书籍5</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">6.</span>
-                    <span class="info-title">这本书好看</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">7.</span>
-                    <span class="info-title">上本书不好看</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的，但实际上确实就是</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">8.</span>
-                    <span class="info-title">骗人的，我才好看</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">9.</span>
-                    <span class="info-title">我不好看，不要读我</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的</span>
-                </li>
-                <li class="rank-card">
-                    <span class="rank">10.</span>
-                    <span class="info-title">垫底书籍</span>
-                    <span class="info-desc">这本书籍看似就是用来占位置的</span>
+                <li v-for="index in 8" :key="index" class="rank-card" @click="OpenBookLinkByOrder(1+index)">
+                    <span class="rank">{{ 2+index }}.</span>
+                    <span class="info-title">{{ RankList[1+index]?.name }}</span>
+                    <span class="info-desc">{{ RankList[1+index]?.description }}</span>
                 </li>
             </ul>
          </div>
@@ -89,23 +54,32 @@
 
 <script setup>
 import axios from 'axios';
+import { ref } from 'vue';
 import './RankList.css'
 
+const RankList = ref([])
+const RankKeySelect = ref(3)
 
 const request = axios.create({
     baseURL: 'http://localhost:9929'
 });
 
+RefishRankListInfoByUpdate();
+
 function RefishRankListInfoByRead(){
+    RankKeySelect.value = 1;
     RefishRankListInfo("browse_amount");
 }
 function RefishRankListInfoByStar(){
+    RankKeySelect.value = 2;
     RefishRankListInfo("bookshelf_amount");
 }
 function RefishRankListInfoByUpdate(){
+    RankKeySelect.value = 3;
     RefishRankListInfo("new_update");
 }
 
+// 刷新排行榜列表
 function RefishRankListInfo(sortKey){
     request.get('/api/v1/books/list',{
         params: {
@@ -114,8 +88,14 @@ function RefishRankListInfo(sortKey){
             sort_key: sortKey,
         }
     }).then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
+        RankList.value = res.data['data']['books'];
     })
+}
+
+function OpenBookLinkByOrder(index){
+    console.log("Open Book: ",RankList.value[index].id);
+    console.log("Book Name: ",RankList.value[index].name);
 }
 
 </script>
