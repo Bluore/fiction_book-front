@@ -1,0 +1,235 @@
+.rank-comp{
+    margin: 0;
+    padding: 0;
+    /* border: 2px dotted greenyellow; */
+    ul, li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    --base-size: 10px;
+}
+/* 筛选栏 */
+.rank-comp .rank-upper {
+    display: flex;
+    width: 100%;
+    height: auto;
+    /* background-color: yellow; */
+}
+.rank-comp .rank-upper .title-box {
+    justify-content: space-between;
+    flex: 1;
+    width: 200px;
+    height: 60px;
+    font: 800 2.5em '';
+    font-family: 'SimSun';
+    /* border: 1px dotted red; */
+    margin: 5px;
+    writing-mode: horizontal-bt;
+    direction: ltr;
+    cursor: default;
+}
+.rank-comp .rank-upper .rank-box {
+    width: 200px;
+    font: 500 1em '';
+    /* border: 1px double green; */
+}
+.rank-comp .rank-box ul {
+    display: flex;
+    width: auto;
+    height: 100%;
+    align-items: flex-end;
+    writing-mode: horizontal-bt;
+    direction: rtl;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+}
+.rank-comp li.sort-option {
+    width: auto;
+    /* background-color: aqua; */
+}
+.rank-comp li.sort-option:nth-child(2) {
+    color: red;
+    border-bottom: 2px double red;
+}
+.rank-comp li.sort-option:hover {
+    color: blue;
+    border-bottom: 2px double red;
+}
+.rank-comp li.sort-option >div{
+    margin: 2px;
+}
+.rank-comp .rank-line {
+    display: block;
+    height: 2px;
+    width: auto;
+    opacity: 0.5;
+    border-top: 2px dotted black;
+    margin: 0 5px 5px 5px;
+}
+/* 扫描线动画 */
+.rank-comp img{
+    display: block;
+    width: 100px;
+    min-width: 100px;
+    height: 125px;
+    z-index: 0;
+    cursor: pointer;
+}
+.rank-comp .img-warp {
+    display: block;
+    width: 100px;
+    min-width: 100px;
+    height: 125px;
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.4));
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    background-color: bisque;
+    overflow: hidden;
+}
+.rank-comp .img-warp:hover {
+    filter: drop-shadow(8px 8px 3px rgba(0,0,0,0.4));
+    transform: translateY(-5px);
+}
+.rank-comp .img-warp::after{
+    content: '';
+    position: absolute;
+    display: block;
+    z-index: 1;
+    background: linear-gradient(
+        to left,
+        rgba(255,255,255,0.5),
+        rgba(255,255,255,0.2)
+    );
+    width: 20px;
+    height: 100%;
+    transform: skew(-25deg);
+    bottom: 0;
+    left: -100%;
+}
+.rank-comp .img-warp:hover::after {
+    animation: shine 0.6s ease;
+}
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 120%;
+    }
+}
+
+/* 置顶书籍的信息显示 */
+.rank-comp .top-card {
+    display: flex;
+}
+.rank-comp .top-card-left{
+    display: flex;
+    min-width: 100px;
+    flex: 1;
+}
+.rank-comp .top-card-right{
+    display: flex;
+    min-width: 100px;
+    flex: 0;
+    writing-mode: horizontal-tb;
+    direction: rtl;
+}
+.rank-comp .top-card-right:hover{
+    flex: 99;
+}
+.rank-comp .top-card-right .info-area{
+    display: none;
+}
+.rank-comp:has(.top-card-right:hover) .top-card-left .info-area{
+    display: none;
+}
+.rank-comp:has(.top-card-right:hover) .top-card-right .info-area{
+    display: block;
+}
+.rank-comp .top-card .book-division {
+    width: 2px;
+    height: auto;
+    border-left: 2px dashed black;
+    margin: 2px 3px;
+}
+/* 主要信息 */
+.rank-comp .card .info-area p {
+    writing-mode: horizontal-tb;
+}
+.rank-comp .card .info-area {
+    margin: 0 5px;
+    overflow-wrap: break-word;
+    .info-title{
+        color: black;
+        font: 800 var(1.5*--base-size) 'SimSun';
+        margin: 0;
+    }
+    .info-desc{
+        color: grey;
+        height: 50px;
+        font: 300 var(--base-size) 'SimSun';
+        margin: 0;
+    }
+    .info-read{
+        font: 300 var(--base-size) '';
+        margin-top: 10px;
+    }
+    .info-push{
+        font: 300 var(--base-size) '';
+        margin: 0;
+    }
+}
+/* 普通书籍 */
+.rank-comp .rank-list {
+    margin: 5px 0 0 0;
+}
+.rank-comp .rank-card {
+    margin: 3px 0 0 3px;
+    /* background-color: antiquewhite; */
+    .rank{
+        color: rgb(93, 159, 101);
+    }
+    .info-title {
+        font: 500 1em 'SimSun';
+        text-decoration: none;
+    }
+    .info-desc {
+        margin-left: 5px;
+        font: 500 0.8em '';
+        overflow: hidden;
+        width: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+.rank-comp .rank-card:hover .info-title{
+    font: 800 1em 'SimSun';
+    text-decoration: underline dashed;
+}
+/* 扫描线动画 */
+.rank-comp .rank-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.rank-comp .rank-card::after{
+    content: '';
+    position: absolute;
+    display: block;
+    z-index: 1;
+    background: linear-gradient(
+        to left,
+        rgba(255,255,255,0.8),
+        rgba(255,255,255,0.2)
+    );
+    width: 100px;
+    height: 100%;
+    transform: skew(-45deg);
+    bottom: 0;
+    left: -100%;
+}
+.rank-comp .rank-card:hover::after{
+    animation: shine 1.2s ease;
+}
