@@ -1,0 +1,71 @@
+.header-comp {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    width: 100%;
+    margin: 0;
+    border-bottom: 4px dotted var(--color-primary);
+    background-color: var(--color-bg);
+}
+
+/* Logo区域 */
+.header-comp .logo-warp{
+    display: inline-block;
+    height: 80px;
+    width: auto;
+    border: 1px dotted black;
+}
+.header-comp .logo-img{
+    height: 70px;
+    border-radius: var(--radius-6);
+    background-color: violet;
+    margin: 5px 10px;
+}
+
+/* 导航栏 */
+.header-comp .nav-list{
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+}
+.header-comp .nav-item{
+    display: inline-block;
+    vertical-align: top;
+    width: 100px;
+    height: 40px;
+    margin: 0 10px;
+    color: var(--color-primary);
+    font: var(--font-weight-5) 25px 'SimSun';
+    text-align: center;
+    padding-top: 10px;
+}
+.header-comp .nav-item:first-child {
+    border: 4px dotted var(--color-primary);
+    border-radius: 10px;
+    border-bottom: none;
+    position:relative;
+}
+.header-comp .nav-item:first-child::after {
+    position: absolute;
+    content: '';
+    display: block;
+    left: 0;
+    bottom: -5px;
+    width: 100px;
+    height: 5px;
+    background-color: var(--color-bg);
+}
+
+/* 用户信息 */
+.header-comp .user{
+    display: inline;
+    float: right;
+    height: 80px;
+}
+.header-comp .user-profile-warp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+}

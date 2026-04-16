@@ -1,0 +1,11 @@
+.page-warp{
+    display: flex;
+    justify-content: center;
+}
+.page{
+    max-width: var(--page-width);
+}
+
+.Carouse-comp {
+    margin: 20px 10px 0 10px;
+}

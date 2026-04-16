@@ -85,7 +85,7 @@
     filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.4));
     transition: all 0.2s ease-in-out;
     position: relative;
-    background-color: bisque;
+    background-color: aliceblue;
     overflow: hidden;
 }
 .rank-comp .img-warp:hover {
@@ -127,30 +127,37 @@
 .rank-comp .top-card-left{
     display: flex;
     min-width: 100px;
+    height: 100px;
     flex: 1;
 }
 .rank-comp .top-card-right{
     display: flex;
     min-width: 100px;
+    height: 100px;
     flex: 0;
     writing-mode: horizontal-tb;
     direction: rtl;
+    transition: all 0.5s ease-in-out;
 }
 .rank-comp .top-card-right:hover{
-    flex: 99;
+    flex: 9999;
+}
+.rank-comp .top-card-left .info-area{
+    overflow: hidden;
 }
 .rank-comp .top-card-right .info-area{
-    display: none;
+    overflow: hidden;
+    /* display: none; */
 }
 .rank-comp:has(.top-card-right:hover) .top-card-left .info-area{
-    display: none;
+    /* display: none; */
 }
 .rank-comp:has(.top-card-right:hover) .top-card-right .info-area{
     display: block;
 }
 .rank-comp .top-card .book-division {
     width: 2px;
-    height: auto;
+    height: 120px;
     border-left: 2px dashed black;
     margin: 2px 3px;
 }
@@ -163,18 +170,19 @@
     overflow-wrap: break-word;
     .info-title{
         color: black;
-        font: 800 var(1.5 * --base-size) 'SimSun';
+        font: 800 calc(2 * var(--base-size)) 'SimSun';
         margin: 0;
     }
     .info-desc{
         color: grey;
-        height: 50px;
-        font: 300 var(--base-size) 'SimSun';
+        height: 55px;
+        font: 300 calc(1.5 * var(--base-size)) 'SimSun';
         margin: 0;
+        overflow: hidden;
     }
     .info-read{
         font: 300 var(--base-size) '';
-        margin-top: 10px;
+        margin: 0;
     }
     .info-push{
         font: 300 var(--base-size) '';

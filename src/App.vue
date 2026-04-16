@@ -1,7 +1,9 @@
 <script setup lang="ts">
-  import HelloWorld from './components/HelloWorld.vue';
+import "open-props";
 </script>
 
 <template>
   <router-view/>
 </template>
+
+<style src="@/style.css"></style>
