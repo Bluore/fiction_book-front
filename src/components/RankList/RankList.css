@@ -10,19 +10,16 @@
 }
 
 .rank-comp .rank-upper .title-box {
-  justify-content: space-between;
   flex: 1;
-  width: 200px;
-  height: 60px;
   font: 800 2.5em 'SimSun';
   margin: 5px;
-  writing-mode: horizontal-bt;
-  direction: ltr;
   cursor: default;
+  white-space: nowrap;
 }
 
 .rank-comp .rank-upper .rank-box {
-  width: 200px;
+  display: flex;
+  align-items: flex-end;
   font: 500 1em 'SimSun';
 }
 
@@ -31,12 +28,11 @@
   width: auto;
   height: 100%;
   align-items: flex-end;
-  writing-mode: horizontal-bt;
-  direction: rtl;
   cursor: pointer;
-  margin: 0 10px 0 0;
+  margin: 0 10px 5px 0;
   list-style: none;
   padding: 0;
+  gap: 15px;
 }
 
 .rank-comp li.sort-option {
