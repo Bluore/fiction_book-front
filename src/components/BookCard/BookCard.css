@@ -1,0 +1,73 @@
+.book-card {
+  width: 184px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+}
+
+.book-cover-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 368 / 460;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.book-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 光线扫描动效 */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 70%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.book-card:hover .scan-line {
+  left: 150%;
+}
+
+.book-info {
+  margin-top: 12px;
+  text-align: left;
+}
+
+.book-title {
+  font-size: var(--font-base);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'SimSun', serif;
+}
+
+.book-author {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin: 4px 0 0 0;
+  font-family: 'SimSun', serif;
+}

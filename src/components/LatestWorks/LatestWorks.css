@@ -1,0 +1,47 @@
+.latest-works {
+  margin-bottom: 40px;
+}
+
+.latest-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.latest-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dotted var(--color-border);
+  font-family: 'SimSun', serif;
+  cursor: pointer;
+}
+
+.latest-item:hover .title {
+  text-decoration: underline;
+}
+
+.category {
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  width: 80px;
+}
+
+.title {
+  flex: 1;
+  font-size: var(--font-base);
+  color: var(--color-text);
+}
+
+.author {
+  width: 120px;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.time {
+  width: 60px;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
