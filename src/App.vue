@@ -3,7 +3,9 @@ import "open-props";
 </script>
 
 <template>
-  <router-view/>
+  <n-message-provider>
+    <router-view/>
+  </n-message-provider>
 </template>
 
 <style src="@/style.css"></style>

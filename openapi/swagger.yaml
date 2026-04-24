@@ -57,6 +57,19 @@ definitions:
       vip_level:
         type: string
     type: object
+  dto.BuyBookChapterRequest:
+    properties:
+      book_id:
+        type: string
+      chapter_id:
+        type: string
+      price:
+        type: integer
+    required:
+    - book_id
+    - chapter_id
+    - price
+    type: object
   dto.BuyBookRequest:
     properties:
       bookID:
@@ -886,6 +899,63 @@ paths:
       summary: 购买书籍
       tags:
       - 消费管理
+  /api/v1/buy/chapter:
+    post:
+      consumes:
+      - application/json
+      description: 购买章节（认证）
+      parameters:
+      - description: 购买章节请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BuyBookChapterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 购买成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 登录已失效
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4001":
+          description: 书籍未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4002":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4017":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4018":
+          description: 余额不足
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 购买章节
+      tags:
+      - 消费管理
   /api/v1/chapters/{id}:
     delete:
       consumes:
@@ -962,6 +1032,14 @@ paths:
           description: 服务器内部错误
           schema:
             $ref: '#/definitions/response.Response'
+        "4001":
+          description: 书籍未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4002":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Response'
         "4010":
           description: 章节未找到
           schema:
@@ -1007,8 +1085,16 @@ paths:
           description: 参数错误
           schema:
             $ref: '#/definitions/response.Response'
+        "401":
+          description: 登录已失效
+          schema:
+            $ref: '#/definitions/response.Response'
         "500":
           description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4001":
+          description: 书籍未找到
           schema:
             $ref: '#/definitions/response.Response'
         "4010":
@@ -1054,8 +1140,12 @@ paths:
           description: 书籍未找到
           schema:
             $ref: '#/definitions/response.Response'
+        "4010":
+          description: 章节未找到
+          schema:
+            $ref: '#/definitions/response.Response'
         "4014":
-          description: 该章节需要先完成登录
+          description: 请先完成登录
           schema:
             $ref: '#/definitions/response.Response'
       summary: 获取章节内容（游客）
@@ -1099,6 +1189,10 @@ paths:
             $ref: '#/definitions/response.Response'
         "4001":
           description: 书籍未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4020":
+          description: 缺失对应权限
           schema:
             $ref: '#/definitions/response.Response'
       security:
@@ -1758,6 +1852,44 @@ paths:
       security:
       - Bearer: []
       summary: 更新用户邮箱
+      tags:
+      - 用户管理
+  /api/v1/users/info:
+    get:
+      consumes:
+      - application/json
+      description: 根据当前用户获取用户详细信息（认证）
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 用户未登录
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4002":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 获取当前用户信息
       tags:
       - 用户管理
   /api/v1/users/information:

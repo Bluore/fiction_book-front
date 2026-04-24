@@ -1,0 +1,22 @@
+import request from './request'
+import type { ApiResponse } from './request'
+
+// 登录接口
+export const loginApi = (data: any) => {
+  return request.post<ApiResponse>('/auth/login', data)
+}
+
+// 注册接口
+export const registerApi = (data: any) => {
+  return request.post<ApiResponse>('/users', data)
+}
+
+// 获取当前用户信息接口
+export const getUserInfoApi = () => {
+  return request.get<ApiResponse>('/users/info')
+}
+
+// 获取邮箱验证码接口
+export const sendEmailVerifyApi = (email: string) => {
+  return request.post<ApiResponse>('/auth/email/verify', { email })
+}

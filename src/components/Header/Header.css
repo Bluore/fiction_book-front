@@ -24,7 +24,8 @@
 
 .logo-img {
   height: 50px;
-  filter: grayscale(1); /* 保持文雅，使用黑白logo */
+  filter: grayscale(1);
+  /* 保持文雅，使用黑白logo */
 }
 
 /* 导航栏 */
@@ -71,4 +72,25 @@
 
 .user-profile-warp:hover {
   opacity: 0.8;
+}
+
+.user-info-brief {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-base);
+  transition: background-color 0.3s;
+}
+
+.user-info-brief:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.username-text {
+  font-family: 'SimSun', serif;
+  font-weight: var(--font-bold);
+  font-size: var(--font-base);
+  color: var(--color-text);
 }
