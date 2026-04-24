@@ -21,6 +21,7 @@ declare module 'vue' {
     NAvatar: typeof import('naive-ui')['NAvatar']
     NCarousel: typeof import('naive-ui')['NCarousel']
     NCarouselItem: typeof import('naive-ui')['NCarouselItem']
+    RankCard: typeof import('./src/components/RankCard/RankCard.vue')['default']
     RankList: typeof import('./src/components/RankList/RankList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

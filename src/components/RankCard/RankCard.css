@@ -1,0 +1,71 @@
+.rank-card {
+    margin: 3px 0 0 3px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 4px 0;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
+}
+
+.rank-card .rank {
+    color: rgb(93, 159, 101);
+    font: 500 1em 'SimSun';
+    margin-right: 8px;
+    min-width: 25px;
+}
+
+.rank-card .info-title {
+    font: 500 1em 'SimSun';
+    text-decoration: none;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+.rank-card .info-desc {
+    margin-left: 10px;
+    font: 500 0.8em 'SimSun';
+    color: grey;
+    overflow: hidden;
+    flex: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.rank-card::after {
+    content: '';
+    position: absolute;
+    display: block;
+    z-index: 1;
+    background: linear-gradient(to left,
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0.2));
+    width: 100px;
+    height: 100%;
+    transform: skew(-45deg);
+    bottom: 0;
+    left: -100%;
+}
+
+.rank-card:hover::after {
+    animation: shine-list 1.2s ease;
+}
+
+.rank-card:hover .info-title {
+    color: blue;
+}
+
+@keyframes shine-list {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 120%;
+    }
+}
