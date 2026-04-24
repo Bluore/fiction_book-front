@@ -1,0 +1,124 @@
+.login-container {
+    min-height: calc(100vh - 100px);
+    /* 减去 header 高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-bg);
+    perspective: 1000px;
+    padding: 40px 20px;
+}
+
+.auth-card-wrapper {
+    width: 100%;
+    max-width: 400px;
+    height: 650px;
+    /* 增加高度以容纳注册表单 */
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.auth-card-wrapper.is-register {
+    transform: rotateY(180deg);
+}
+
+.auth-card-front,
+.auth-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: white;
+    border: 1px solid var(--color-primary);
+    padding: 30px 40px;
+    /* 稍微减小上下内边距 */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 0px var(--color-primary);
+    overflow: hidden;
+    /* 确保内容不溢出边框 */
+}
+
+.auth-card-back {
+    transform: rotateY(180deg);
+}
+
+.auth-title {
+    font-family: 'SimSun', serif;
+    font-size: var(--font-2xl);
+    font-weight: var(--font-bold);
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 10px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    /* 从 20px 减小到 16px */
+    flex: 1;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-family: 'SimSun', serif;
+    font-weight: var(--font-bold);
+    font-size: var(--font-sm);
+}
+
+.email-verify-group {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.switch-tip {
+    text-align: center;
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+}
+
+.switch-link {
+    color: var(--color-primary);
+    cursor: pointer;
+    font-weight: var(--font-bold);
+    text-decoration: underline;
+}
+
+/* Naive UI override to match style */
+:deep(.n-input) {
+    --n-border-radius: 0 !important;
+    --n-border: 1px solid var(--color-primary) !important;
+    --n-border-hover: 1px solid var(--color-primary) !important;
+    --n-border-focus: 2px solid var(--color-primary) !important;
+    --n-box-shadow-focus: none !important;
+}
+
+:deep(.n-button) {
+    --n-border-radius: 0 !important;
+    font-family: 'SimSun', serif;
+    font-weight: var(--font-bold);
+}
+
+:deep(.n-button--primary-type) {
+    --n-color: var(--color-primary) !important;
+    --n-color-hover: #333 !important;
+    --n-color-pressed: #000 !important;
+    --n-border: 1px solid var(--color-primary) !important;
+}

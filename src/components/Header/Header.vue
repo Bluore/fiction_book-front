@@ -8,7 +8,7 @@
       
       <!-- 导航栏 -->
       <nav class="nav-list">
-        <div class="nav-item active">首页</div>
+        <router-link to="/" class="nav-item" active-class="active">首页</router-link>
         <div class="nav-item">书库</div>
         <div class="nav-item">排行榜</div>
         <div class="nav-item">我的书架</div>
@@ -16,7 +16,16 @@
 
       <!-- 用户信息 -->
       <div class="user">
-        <div class="user-profile-warp">
+        <router-link 
+          v-if="!isLoggedIn" 
+          to="/login" 
+          class="nav-item" 
+          active-class="active" 
+          style="margin-right: 20px; font-size: var(--font-base);"
+        >
+          登录 / 注册
+        </router-link>
+        <div v-else class="user-profile-warp">
           <n-avatar round :size="40" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
         </div>
       </div>
@@ -25,5 +34,6 @@
 </template>
 
 <script setup lang="ts">
+import { isLoggedIn } from '@/utils/auth'
 import './Header.css'
 </script>
