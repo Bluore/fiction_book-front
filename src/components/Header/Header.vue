@@ -9,7 +9,7 @@
       <!-- 导航栏 -->
       <nav class="nav-list">
         <router-link to="/" class="nav-item" active-class="active">首页</router-link>
-        <div class="nav-item">书库</div>
+        <router-link to="/library" class="nav-item" active-class="active">书库</router-link>
         <div class="nav-item">排行榜</div>
         <div class="nav-item">我的书架</div>
       </nav>

@@ -1,0 +1,163 @@
+.book-library-view {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, .02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, .02) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.page-warp {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  padding: 40px 20px;
+}
+
+.library-header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.library-header h1 {
+  font-size: 2rem;
+  color: var(--text-1);
+  margin: 0;
+}
+
+.filter-section {
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.filter-label {
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  font-size: var(--font-sm);
+}
+
+/* 简约风格的单选按钮 */
+:deep(.n-radio-group.n-radio-group--button-group) {
+  display: flex;
+  gap: 0.5rem;
+}
+
+:deep(.n-radio-button) {
+  --n-button-border-color: transparent !important;
+  --n-button-border-color-active: transparent !important;
+  --n-button-box-shadow: none !important;
+  --n-button-box-shadow-focus: none !important;
+  --n-button-color: transparent !important;
+  --n-button-color-active: transparent !important;
+  --n-button-text-color: var(--color-text-secondary) !important;
+  --n-button-text-color-active: var(--color-primary) !important;
+  --n-button-text-color-hover: var(--color-primary) !important;
+  background-color: transparent !important;
+}
+
+:deep(.n-radio-button__state-border) {
+  display: none;
+}
+
+:deep(.n-radio-button.n-radio-button--checked) {
+  font-weight: 600;
+  position: relative;
+}
+
+:deep(.n-radio-button.n-radio-button--checked::after) {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 2px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+:deep(.n-radio-group__splitor) {
+  display: none;
+}
+
+/* 简约风格的选择框 */
+:deep(.n-select) {
+  --n-border: none !important;
+  --n-border-active: none !important;
+  --n-border-focus: none !important;
+  --n-border-hover: none !important;
+  --n-box-shadow-active: none !important;
+  --n-box-shadow-focus: none !important;
+  --n-box-shadow-hover: none !important;
+  --n-color: transparent !important;
+  --n-caret-color: var(--color-primary) !important;
+}
+
+:deep(.n-base-selection) {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  border-radius: 0 !important;
+}
+
+:deep(.n-base-selection:hover) {
+  border-bottom-color: var(--color-primary) !important;
+}
+
+:deep(.n-base-selection--active) {
+  border-bottom-color: var(--color-primary) !important;
+}
+
+.book-library-view .book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.book-library-view .loading-container,
+.book-library-view .empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  color: var(--text-2);
+}
+
+.book-library-view .pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .book-library-view .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

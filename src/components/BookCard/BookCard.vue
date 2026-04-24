@@ -1,8 +1,22 @@
 <template>
   <div class="book-card" :class="{ 'has-rank': rank }">
-    <div class="book-cover-wrapper">
-      <img :src="book.cover_image" :alt="book.name" class="book-cover" />
-      <div class="scan-line"></div>
+    <div class="book-cover-wrapper" :class="{ 'is-loading': !isLoaded && !isError }">
+      <img 
+        v-show="isLoaded"
+        :src="book.cover_image" 
+        :alt="book.name" 
+        class="book-cover" 
+        @load="handleLoad"
+        @error="handleError"
+      />
+      <!-- 加载失败占位 -->
+      <div v-if="isError" class="error-placeholder">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path fill="currentColor" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c0 1.1-.9 2-2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+        </svg>
+      </div>
+      <!-- 扫描线：仅在加载中显示无限循环动画，加载完成后仅在悬停时显示单次动画 -->
+      <div class="scan-line" :class="{ 'infinite-scan': !isLoaded && !isError }"></div>
       <div v-if="book.vip_level" class="vip-tag">{{ book.vip_level.toUpperCase() }}</div>
       <div v-if="rank" class="rank-badge" :class="'rank-' + rank">{{ rank }}</div>
     </div>
@@ -23,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { BookMetadata } from '../../mocks/books';
 import './BookCard.css';
 
@@ -33,6 +48,17 @@ withDefaults(defineProps<{
 }>(), {
   showDescription: false
 });
+
+const isLoaded = ref(false);
+const isError = ref(false);
+
+const handleLoad = () => {
+  isLoaded.value = true;
+};
+
+const handleError = () => {
+  isError.value = true;
+};
 
 const formatAmount = (amount: number) => {
   if (amount >= 10000) {

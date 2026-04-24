@@ -1,0 +1,47 @@
+import request from './request'
+import type { ApiResponse } from './request'
+
+export interface BookResponse {
+    id: string
+    name: string
+    description: string
+    cover_image: string
+    owner_id: string
+    created_at: string
+    updated_at: string
+    push_at: string
+    browse_amount: number
+    bookshelf_amount: number
+    price: number
+    vip_level: string
+}
+
+export interface BookListResponse {
+    books: BookResponse[]
+    count: number
+    page: number
+    size: number
+}
+
+export interface BookListParams {
+    page?: number
+    size?: number
+    sort_key?: 'browse_amount' | 'bookshelf_amount' | 'new_update' | 'new_push'
+    sort_order?: 'asc' | 'desc'
+    push_start_time?: string
+    push_end_time?: string
+}
+
+/**
+ * 获取书籍列表
+ */
+export const getBookListApi = (params: BookListParams) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/list', { params })
+}
+
+/**
+ * 获取书籍详情
+ */
+export const getBookDetailApi = (id: string) => {
+    return request.get<ApiResponse<BookResponse>>(`/books/${id}`)
+}
