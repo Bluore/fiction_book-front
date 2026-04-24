@@ -11,14 +11,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BookCard: typeof import('./src/components/BookCard/BookCard.vue')['default']
     Carouse: typeof import('./src/components/Carouse/Carouse.vue')['default']
+    Footer: typeof import('./src/components/Footer/Footer.vue')['default']
     Header: typeof import('./src/components/Header/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HotRecommend: typeof import('./src/components/HotRecommend/HotRecommend.vue')['default']
+    LatestWorks: typeof import('./src/components/LatestWorks/LatestWorks.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NCarousel: typeof import('naive-ui')['NCarousel']
     NCarouselItem: typeof import('naive-ui')['NCarouselItem']
+    RankCard: typeof import('./src/components/RankCard/RankCard.vue')['default']
     RankList: typeof import('./src/components/RankList/RankList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBar: typeof import('./src/components/SearchBar/SearchBar.vue')['default']
   }
 }

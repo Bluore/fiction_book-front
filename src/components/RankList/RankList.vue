@@ -1,101 +1,90 @@
 <template>
-    <div class="rank-comp">
-        <div class="rank-upper">
-             <div class="title-box">
-                 排行榜
-             </div>
-             <div class="rank-box">
-                 <ul>
-                     <li class="sort-option" :class="{select: RankKeySelect===1}"  @click="RefishRankListInfoByRead"><div class="sort-option-box">阅读</div></li>
-                     <li class="sort-option" :class="{select: RankKeySelect===2}" @click="RefishRankListInfoByStar"><div class="sort-option-box">收藏</div></li>
-                     <li class="sort-option" :class="{select: RankKeySelect===3}" @click="RefishRankListInfoByUpdate"><div class="sort-option-box">最新</div></li>
-                 </ul>
-             </div>
-         </div>
-         <div class="rank-line"></div>
-         <div class="rank-content">
-           <!-- 置顶书籍 -->
-            <div class="top-card">
-                <div class="top-card-left card" @click="OpenBookLinkByOrder(0)">
-                    <div class="img-warp">
-                        <img :src="RankList[0]?.cover_image" alt="{{ RankList[0]?.name }}">
-                    </div>
-                    <div class="info-area">
-                        <p class="info-title">{{ RankList[0]?.name }}</p>
-                        <p class="info-desc">{{ RankList[0]?.description }}</p>
-                        <p class="info-read">阅读量：{{ RankList[0]?.browse_amount }}</p>
-                        <p class="info-push">上架时间：{{ RankList[0]?.created_at }}</p>
-                    </div>
-                </div>
-                <div class="book-division"></div>
-                <div class="top-card-right card" @click="OpenBookLinkByOrder(1)">
-                    <div class="img-warp">
-                        <img :src="RankList[1]?.cover_image" alt="{{ RankList[1]?.name }}">
-                    </div>
-                    <div class="info-area">
-                        <p class="info-title">{{ RankList[1]?.name }}</p>
-                        <p class="info-desc">{{ RankList[1]?.description }}</p>
-                        <p class="info-read">阅读量：{{ RankList[1]?.browse_amount }}</p>
-                        <p class="info-push">上架时间：{{ RankList[1]?.created_at }}</p>
-                    </div>
-                </div>
-            </div>
-            <!-- 非置顶书籍 -->
-            <ul class="rank-list">
-                <li v-for="index in 8" :key="index" class="rank-card" @click="OpenBookLinkByOrder(1+index)">
-                    <span class="rank">{{ 2+index }}.</span>
-                    <span class="info-title">{{ RankList[1+index]?.name }}</span>
-                    <span class="info-desc">{{ RankList[1+index]?.description }}</span>
-                </li>
-            </ul>
-         </div>
+  <div class="rank-comp">
+    <div class="rank-upper">
+      <div class="title-box">排行榜</div>
+      <div class="rank-box">
+        <ul>
+          <li class="sort-option" :class="{ select: activeTab === 'read' }" @click="activeTab = 'read'">
+            <div class="sort-option-box">阅读</div>
+          </li>
+          <li class="sort-option" :class="{ select: activeTab === 'star' }" @click="activeTab = 'star'">
+            <div class="sort-option-box">收藏</div>
+          </li>
+          <li class="sort-option" :class="{ select: activeTab === 'new' }" @click="activeTab = 'new'">
+            <div class="sort-option-box">最新</div>
+          </li>
+        </ul>
+      </div>
     </div>
+
+    <div class="rank-line"></div>
+
+    <div class="rank-content">
+      <!-- 置顶书籍 -->
+      <div class="top-card">
+        <div class="top-card-left card" @click="handleBookClick(displayBooks[0]?.id)">
+          <div class="img-warp">
+            <img :src="displayBooks[0]?.cover_image" :alt="displayBooks[0]?.name">
+          </div>
+          <div class="info-area">
+            <p class="info-title">{{ displayBooks[0]?.name }}</p>
+            <p class="info-desc">{{ displayBooks[0]?.description }}</p>
+            <p class="info-read">阅读量：{{ formatAmount(displayBooks[0]?.browse_amount || 0) }}</p>
+            <p class="info-push">上架时间：{{ displayBooks[0]?.created_at }}</p>
+          </div>
+        </div>
+
+        <div class="book-division"></div>
+
+        <div class="top-card-right card" @click="handleBookClick(displayBooks[1]?.id)">
+          <div class="img-warp">
+            <img :src="displayBooks[1]?.cover_image" :alt="displayBooks[1]?.name">
+          </div>
+          <div class="info-area">
+            <p class="info-title">{{ displayBooks[1]?.name }}</p>
+            <p class="info-desc">{{ displayBooks[1]?.description }}</p>
+            <p class="info-read">阅读量：{{ formatAmount(displayBooks[1]?.browse_amount || 0) }}</p>
+            <p class="info-push">上架时间：{{ displayBooks[1]?.created_at }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 普通排行列表 -->
+      <ul class="rank-list">
+        <RankCard 
+          v-for="index in 8" 
+          :key="index"
+          :rank="index + 2"
+          :book="displayBooks[index + 1]"
+          @click="handleBookClick(displayBooks[index + 1]?.id)"
+        />
+      </ul>
+    </div>
+  </div>
 </template>
 
-<script setup>
-import axios from 'axios';
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { mockBooks } from '../../mocks/books';
+import RankCard from '../RankCard/RankCard.vue';
 import './RankList.css'
 
-const RankList = ref([])
-const RankKeySelect = ref(3)
+const activeTab = ref('read');
 
-const request = axios.create({
-    baseURL: 'http://localhost:9929'
+const displayBooks = computed(() => {
+  if (activeTab.value === 'read') return mockBooks.slice(0, 10);
+  if (activeTab.value === 'star') return mockBooks.slice(10, 20);
+  return mockBooks.slice(20, 30);
 });
 
-RefishRankListInfoByUpdate();
+const formatAmount = (amount: number) => {
+  if (amount >= 10000) {
+    return (amount / 10000).toFixed(1) + '万';
+  }
+  return amount.toString();
+};
 
-function RefishRankListInfoByRead(){
-    RankKeySelect.value = 1;
-    RefishRankListInfo("browse_amount");
-}
-function RefishRankListInfoByStar(){
-    RankKeySelect.value = 2;
-    RefishRankListInfo("bookshelf_amount");
-}
-function RefishRankListInfoByUpdate(){
-    RankKeySelect.value = 3;
-    RefishRankListInfo("new_update");
-}
-
-// 刷新排行榜列表
-function RefishRankListInfo(sortKey){
-    request.get('/api/v1/books/list',{
-        params: {
-            page: 1,
-            size: 10,
-            sort_key: sortKey,
-        }
-    }).then(res=>{
-        // console.log(res.data);
-        RankList.value = res.data['data']['books'];
-    })
-}
-
-function OpenBookLinkByOrder(index){
-    console.log("Open Book: ",RankList.value[index].id);
-    console.log("Book Name: ",RankList.value[index].name);
-}
-
+const handleBookClick = (id?: string) => {
+  if (id) console.log('Open book:', id);
+};
 </script>

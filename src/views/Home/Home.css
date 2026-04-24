@@ -1,11 +1,46 @@
-.page-warp{
-    display: flex;
-    justify-content: center;
-}
-.page{
-    max-width: var(--page-width);
+.home-view {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  /* 模拟纸张质感的微弱纹理 */
+  background-image: 
+    linear-gradient(rgba(0,0,0,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.02) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
+.page-warp {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  padding: 0 20px;
+}
+
+/* 轮播图外边距 */
 .Carouse-comp {
-    margin: 20px 10px 0 10px;
+  margin: 20px 0 60px 0;
+}
+
+/* 主内容布局：左侧内容 + 右侧侧栏 */
+.main-content-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+.left-section {
+  min-width: 0;
+}
+
+.right-sidebar {
+  position: sticky;
+  top: 20px;
 }
