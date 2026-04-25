@@ -29,103 +29,78 @@
 }
 
 .library-header h1 {
-  font-size: 2rem;
-  color: var(--text-1);
+  font-size: var(--font-2xl);
+  color: var(--color-text);
   margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--font-bold);
 }
 
 .filter-section {
   padding: 1.5rem 0;
   margin-bottom: 2rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .filter-label {
-  font-weight: 500;
+  font-weight: var(--font-bold);
   color: var(--color-text-secondary);
   white-space: nowrap;
   font-size: var(--font-sm);
+  font-family: var(--font-serif);
 }
 
-/* 简约风格的单选按钮 */
-:deep(.n-radio-group.n-radio-group--button-group) {
+/* 自定义单选按钮组 - 文学风 */
+.custom-radio-group,
+.custom-order-toggle {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
 }
 
-:deep(.n-radio-button) {
-  --n-button-border-color: transparent !important;
-  --n-button-border-color-active: transparent !important;
-  --n-button-box-shadow: none !important;
-  --n-button-box-shadow-focus: none !important;
-  --n-button-color: transparent !important;
-  --n-button-color-active: transparent !important;
-  --n-button-text-color: var(--color-text-secondary) !important;
-  --n-button-text-color-active: var(--color-primary) !important;
-  --n-button-text-color-hover: var(--color-primary) !important;
-  background-color: transparent !important;
-}
-
-:deep(.n-radio-button__state-border) {
-  display: none;
-}
-
-:deep(.n-radio-button.n-radio-button--checked) {
-  font-weight: 600;
+.custom-radio-item,
+.custom-order-item {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-serif);
   position: relative;
+  padding: 2px 0;
 }
 
-:deep(.n-radio-button.n-radio-button--checked::after) {
+.custom-radio-item:hover,
+.custom-order-item:hover {
+  color: var(--color-primary-hover);
+}
+
+.custom-radio-item.active,
+.custom-order-item.active {
+  color: var(--color-primary);
+  font-weight: var(--font-bold);
+}
+
+.custom-radio-item.active::after,
+.custom-order-item.active::after {
   content: '';
   position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
   height: 2px;
   background-color: var(--color-primary);
-  border-radius: var(--radius-full);
+  transform: scaleX(1);
 }
 
-:deep(.n-radio-group__splitor) {
-  display: none;
-}
-
-/* 简约风格的选择框 */
-:deep(.n-select) {
-  --n-border: none !important;
-  --n-border-active: none !important;
-  --n-border-focus: none !important;
-  --n-border-hover: none !important;
-  --n-box-shadow-active: none !important;
-  --n-box-shadow-focus: none !important;
-  --n-box-shadow-hover: none !important;
-  --n-color: transparent !important;
-  --n-caret-color: var(--color-primary) !important;
-}
-
-:deep(.n-base-selection) {
-  background-color: transparent !important;
-  border-bottom: 1px solid var(--color-border) !important;
-  border-radius: 0 !important;
-}
-
-:deep(.n-base-selection:hover) {
-  border-bottom-color: var(--color-primary) !important;
-}
-
-:deep(.n-base-selection--active) {
-  border-bottom-color: var(--color-primary) !important;
-}
+/* 移除之前的 Naive UI 覆盖样式 */
 
 .book-library-view .book-grid {
   display: grid;

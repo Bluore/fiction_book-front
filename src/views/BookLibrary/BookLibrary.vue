@@ -15,22 +15,32 @@
         <div class="filter-section">
           <div class="filter-group">
             <span class="filter-label">排序方式:</span>
-            <n-radio-group v-model:value="queryParams.sort_key" name="sortKey" @update:value="handleSearch">
-              <n-radio-button value="new_push">最新发布</n-radio-button>
-              <n-radio-button value="new_update">最近更新</n-radio-button>
-              <n-radio-button value="browse_amount">点击最多</n-radio-button>
-              <n-radio-button value="bookshelf_amount">收藏最多</n-radio-button>
-            </n-radio-group>
+            <div class="custom-radio-group">
+              <span 
+                v-for="opt in sortOptions" 
+                :key="opt.value"
+                class="custom-radio-item"
+                :class="{ active: queryParams.sort_key === opt.value }"
+                @click="updateSortKey(opt.value)"
+              >
+                {{ opt.label }}
+              </span>
+            </div>
           </div>
           
           <div class="filter-group">
             <span class="filter-label">排序方向:</span>
-            <n-select
-              v-model:value="queryParams.sort_order"
-              :options="orderOptions"
-              style="width: 120px"
-              @update:value="handleSearch"
-            />
+            <div class="custom-order-toggle">
+              <span 
+                v-for="opt in orderOptions" 
+                :key="opt.value"
+                class="custom-order-item"
+                :class="{ active: queryParams.sort_order === opt.value }"
+                @click="updateSortOrder(opt.value)"
+              >
+                {{ opt.label }}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -90,10 +100,27 @@ const queryParams = reactive<Required<Pick<BookListParams, 'page' | 'size' | 'so
   sort_order: 'desc'
 });
 
+const sortOptions = [
+  { label: '最新发布', value: 'new_push' },
+  { label: '最近更新', value: 'new_update' },
+  { label: '点击最多', value: 'browse_amount' },
+  { label: '收藏最多', value: 'bookshelf_amount' }
+];
+
 const orderOptions = [
   { label: '降序', value: 'desc' },
   { label: '升序', value: 'asc' }
 ];
+
+const updateSortKey = (key: string) => {
+  queryParams.sort_key = key as any;
+  handleSearch();
+};
+
+const updateSortOrder = (order: string) => {
+  queryParams.sort_order = order as any;
+  handleSearch();
+};
 
 const fetchBooks = async () => {
   loading.value = true;
