@@ -4,9 +4,9 @@
   flex-direction: column;
   background-color: var(--color-bg);
   /* 模拟纸张质感的微弱纹理 */
-  background-image: 
-    linear-gradient(rgba(0,0,0,.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,.02) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, .02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, .02) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 

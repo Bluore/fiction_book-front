@@ -48,7 +48,7 @@ import { useRouter } from 'vue-router'
 import { isLoggedIn, userInfo, setUserInfo, logout } from '@/utils/auth'
 import { getUserInfoApi } from '@/api/auth'
 import { useMessage, NIcon } from 'naive-ui'
-import { LogOutOutline } from '@vicons/ionicons5'
+import { LogOutOutline, PersonOutline } from '@vicons/ionicons5'
 import './Header.css'
 
 const router = useRouter()
@@ -59,6 +59,11 @@ const renderIcon = (icon: any) => {
 }
 
 const userOptions = [
+  {
+    label: '个人中心',
+    key: 'space',
+    icon: renderIcon(PersonOutline)
+  },
   {
     label: '退出登录',
     key: 'logout',
@@ -71,6 +76,8 @@ const handleSelect = (key: string) => {
     logout()
     message.success('已安全退出登录')
     router.push('/login')
+  } else if (key === 'space') {
+    router.push('/space')
   }
 }
 
