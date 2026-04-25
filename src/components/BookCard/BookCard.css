@@ -58,12 +58,13 @@
   transform: skewX(-25deg);
   pointer-events: none;
   z-index: 2;
+  transition: left 0.6s ease-in-out;
+  /* 添加在这里，实现双向动画 */
 }
 
-/* 悬停时的单次扫描 */
+/* 悬停时的扫描 */
 .book-card:hover .scan-line:not(.infinite-scan) {
   left: 150%;
-  transition: left 0.6s ease-in-out;
 }
 
 /* 加载中的无限扫描 */

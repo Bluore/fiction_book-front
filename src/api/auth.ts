@@ -16,6 +16,13 @@ export const getUserInfoApi = () => {
   return request.get<ApiResponse>('/users/info')
 }
 
+/**
+ * 根据用户ID获取指定用户信息 (如作者信息)
+ */
+export const getUserByIdApi = (id: string) => {
+  return request.get<ApiResponse>('/users/' + id)
+}
+
 // 获取邮箱验证码接口
 export const sendEmailVerifyApi = (email: string) => {
   return request.post<ApiResponse>('/auth/email/verify', { email })

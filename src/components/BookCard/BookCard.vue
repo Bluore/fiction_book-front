@@ -1,5 +1,5 @@
 <template>
-  <div class="book-card" :class="{ 'has-rank': rank }">
+  <div class="book-card" :class="{ 'has-rank': rank }" @click="handleNavigate">
     <div class="book-cover-wrapper" :class="{ 'is-loading': !isLoaded && !isError }">
       <img 
         v-show="isLoaded"
@@ -38,10 +38,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import type { BookMetadata } from '../../mocks/books';
 import './BookCard.css';
 
-withDefaults(defineProps<{
+const router = useRouter();
+const props = withDefaults(defineProps<{
   book: BookMetadata;
   showDescription?: boolean;
   rank?: number;
@@ -51,6 +53,10 @@ withDefaults(defineProps<{
 
 const isLoaded = ref(false);
 const isError = ref(false);
+
+const handleNavigate = () => {
+  router.push({ name: 'book-detail', params: { id: props.book.id } });
+};
 
 const handleLoad = () => {
   isLoaded.value = true;

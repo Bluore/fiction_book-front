@@ -16,6 +16,14 @@ export interface BookResponse {
     vip_level: string
 }
 
+export interface BookChapterResponse {
+    chapter_id: string
+    title: string
+    order: number
+    vip_level: string
+    price: number
+}
+
 export interface BookListResponse {
     books: BookResponse[]
     count: number
@@ -44,4 +52,11 @@ export const getBookListApi = (params: BookListParams) => {
  */
 export const getBookDetailApi = (id: string) => {
     return request.get<ApiResponse<BookResponse>>(`/books/${id}`)
+}
+
+/**
+ * 获取书籍章节列表
+ */
+export const getBookChaptersApi = (id: string) => {
+    return request.get<ApiResponse<{ Chapters: BookChapterResponse[] }>>(`/books/${id}/chapters/list`)
 }

@@ -1,0 +1,67 @@
+.book-detail-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fcfaf2;
+  /* 纸张质感背景 */
+  color: #333;
+}
+
+.page-warp {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 40px 0;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  padding: 0 20px;
+}
+
+.divider {
+  height: 1px;
+  border-top: 1px dashed #ccc;
+  /* 点线风格 */
+  margin: 40px 0;
+}
+
+.catalog-section {
+  margin-top: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #666;
+  cursor: pointer;
+  text-decoration: underline;
+  /* 仅下划线，无边框阴影 */
+  transition: color 0.2s;
+}
+
+.btn-text:hover {
+  color: #000;
+}
+
+.btn-continue {
+  font-size: 1.1rem;
+}

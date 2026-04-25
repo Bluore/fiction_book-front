@@ -65,10 +65,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { mockBooks } from '../../mocks/books';
 import RankCard from '../RankCard/RankCard.vue';
 import './RankList.css'
 
+const router = useRouter();
 const activeTab = ref('read');
 
 const displayBooks = computed(() => {
@@ -85,6 +87,8 @@ const formatAmount = (amount: number) => {
 };
 
 const handleBookClick = (id?: string) => {
-  if (id) console.log('Open book:', id);
+  if (id) {
+    router.push({ name: 'book-detail', params: { id } });
+  }
 };
 </script>
