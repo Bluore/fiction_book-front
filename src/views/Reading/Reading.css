@@ -166,12 +166,32 @@
   background-color: rgba(212, 160, 23, 0.05);
   border-radius: 4px;
   border-left: 4px solid #d4a017;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #5c5246;
 }
 
 .gold-text {
   color: #d4a017;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.vip-text {
+  color: #e21d1d;
+  font-weight: bold;
+  background: rgba(226, 29, 29, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
 }
 
 .recharge-tip {
@@ -179,6 +199,12 @@
   font-size: 0.85rem;
   color: #a09580;
   font-style: italic;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 .recharge-link {

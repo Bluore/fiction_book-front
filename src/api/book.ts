@@ -84,6 +84,13 @@ export const getChapterDetailGuestApi = (id: string) => {
 }
 
 /**
+ * 获取章节信息
+ */
+export const getChapterInfoApi = (id: string) => {
+    return request.get<ApiResponse<BookChapterResponse>>(`/chapters/${id}/info`)
+}
+
+/**
  * 购买章节
  */
 export const buyChapterApi = (data: BuyChapterRequest) => {

@@ -59,26 +59,50 @@
 
     <Footer />
 
-    <!-- 购买弹窗 -->
+    <!-- 权限/购买弹窗 -->
     <n-modal
       v-model:show="showPurchaseModal"
       preset="dialog"
       title="权限不足"
-      :positive-text="chapterToPurchase?.price ? '确认购买' : '去充值'"
-      negative-text="取消"
-      @positive-click="handlePurchase"
+      :closable="true"
     >
       <div class="purchase-info">
         <p class="purchase-msg">{{ purchaseMessage }}</p>
         
-        <div v-if="chapterToPurchase?.price" class="price-detail">
-          章节价格：<span class="gold-text">{{ chapterToPurchase.price }} 金豆</span>
+        <div v-if="chapterToPurchase && chapterToPurchase.price > 0" class="price-detail">
+          <div class="info-item">
+            <span>章节价格：</span>
+            <span class="gold-text">{{ chapterToPurchase.price }} 金豆</span>
+          </div>
+          <div v-if="chapterToPurchase.vip_level" class="info-item">
+            <span>所需会员：</span>
+            <span class="vip-text">{{ chapterToPurchase.vip_level.toUpperCase() }}</span>
+          </div>
         </div>
 
         <div class="recharge-tip">
-          提示：如果余额不足或等级不够，请前往 <router-link to="/space" class="recharge-link">个人中心</router-link> 充值金豆或提升 VIP 等级。
+          提示：您可以选择直接<strong>购买本章</strong>，或者<strong>升级 VIP</strong> 以解锁更多权限。
         </div>
       </div>
+      
+      <template #action>
+        <div class="modal-actions">
+          <n-button @click="showPurchaseModal = false">取消</n-button>
+          <n-button 
+            v-if="chapterToPurchase && chapterToPurchase.price > 0"
+            type="primary" 
+            @click="handlePurchaseChapter"
+          >
+            购买本章
+          </n-button>
+          <n-button 
+            type="warning" 
+            @click="handleGoToVip"
+          >
+            升级 VIP
+          </n-button>
+        </div>
+      </template>
     </n-modal>
   </div>
 </template>
@@ -92,6 +116,7 @@ import Footer from '@/components/Footer/Footer.vue';
 import { 
   getChapterDetailApi, 
   getChapterDetailGuestApi, 
+  getChapterInfoApi,
   buyChapterApi,
   getBookChaptersApi,
   type BookChapterResponse 
@@ -125,11 +150,31 @@ const formatDate = (dateStr?: string) => {
   return new Date(dateStr).toLocaleDateString();
 };
 
-const handle4015Error = (errorData: any) => {
+const handle4015Error = async (errorData: any) => {
   // 4015 代表权限不足（未购买或 VIP 等级不足）
-  chapterToPurchase.value = errorData.data;
   purchaseMessage.value = errorData.message || '该章节需要付费或提升会员等级后阅读';
-  showPurchaseModal.value = true;
+  
+  if (isLoggedIn.value) {
+    // 如果 data 中没有价格等信息，则调用新的 info 接口获取元数据
+    if (!errorData.data || !errorData.data.price) {
+      try {
+        const infoRes = await getChapterInfoApi(chapterId.value);
+        if (infoRes.data.code === 200) {
+          chapterToPurchase.value = infoRes.data.data;
+        }
+      } catch (err) {
+        console.error('Fetch chapter info error:', err);
+      }
+    } else {
+      chapterToPurchase.value = errorData.data;
+    }
+    
+    showPurchaseModal.value = true;
+  } else {
+    // 如果未登录，引导去登录
+    message.warning('请先登录以继续阅读');
+    router.push({ name: 'login', query: { redirect: route.fullPath } });
+  }
 };
 
 const fetchChapterData = async () => {
@@ -152,7 +197,7 @@ const fetchChapterData = async () => {
       message.warning('该章节需要登录后阅读');
       router.push({ name: 'login', query: { redirect: route.fullPath } });
     } else if (res.data.code === 4015) {
-      handle4015Error(res.data);
+      await handle4015Error(res.data);
     } else {
       errorMsg.value = res.data.message || '获取内容失败';
     }
@@ -164,7 +209,7 @@ const fetchChapterData = async () => {
       message.warning('该章节需要登录后阅读');
       router.push({ name: 'login', query: { redirect: route.fullPath } });
     } else if (errorCode === 4015) {
-      handle4015Error(err);
+      await handle4015Error(err);
     } else {
       errorMsg.value = err.message || '网络错误，请稍后再试';
     }
@@ -224,12 +269,12 @@ const goToChapter = (direction: 'prev' | 'next') => {
   }
 };
 
-const handlePurchase = async () => {
-  // 如果没有价格信息，说明可能是纯 VIP 等级不足，直接引导去个人中心
-  if (!chapterToPurchase.value?.price) {
-    router.push('/space');
-    return;
-  }
+const handleGoToVip = () => {
+  router.push('/space');
+};
+
+const handlePurchaseChapter = async () => {
+  if (!chapterToPurchase.value) return;
   
   try {
     const res = await buyChapterApi({
@@ -241,13 +286,12 @@ const handlePurchase = async () => {
     if (res.data.code === 200) {
       message.success('购买成功');
       showPurchaseModal.value = false;
-      fetchChapterData();
+      fetchChapterData(); // 重新获取内容
     } else {
       message.error(res.data.message || '购买失败');
     }
   } catch (err: any) {
-    const msg = err.response?.data?.message || '购买失败，请检查余额';
-    message.error(msg);
+    message.error(err.message || '购买过程中发生错误');
   }
 };
 

@@ -1151,6 +1151,48 @@ paths:
       summary: 获取章节内容（游客）
       tags:
       - 章节管理
+  /api/v1/chapters/{id}/info:
+    get:
+      consumes:
+      - application/json
+      description: 获取章节信息
+      parameters:
+      - description: 章节ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BookChapterResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4001":
+          description: 书籍未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4010":
+          description: 章节未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取章节信息
+      tags:
+      - 章节管理
   /api/v1/chapters/create:
     post:
       consumes:
