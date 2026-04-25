@@ -7,12 +7,12 @@
 </template>
 
 <script setup lang="ts">
-import type { BookMetadata } from '../../mocks/books';
+import type { BookResponse } from '../../api/book';
 import './RankCard.css';
 
 defineProps<{
   rank: number;
-  book?: BookMetadata;
+  book?: BookResponse;
 }>();
 
 defineEmits(['click']);
