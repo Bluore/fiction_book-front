@@ -19,8 +19,16 @@ export interface BookResponse {
 export interface BookChapterResponse {
     chapter_id: string
     title: string
+    content?: string
     order: number
     vip_level: string
+    price: number
+    Book?: BookResponse
+}
+
+export interface BuyChapterRequest {
+    book_id: string
+    chapter_id: string
     price: number
 }
 
@@ -59,4 +67,25 @@ export const getBookDetailApi = (id: string) => {
  */
 export const getBookChaptersApi = (id: string) => {
     return request.get<ApiResponse<{ Chapters: BookChapterResponse[] }>>(`/books/${id}/chapters/list`)
+}
+
+/**
+ * 获取章节内容（认证）
+ */
+export const getChapterDetailApi = (id: string) => {
+    return request.get<ApiResponse<BookChapterResponse>>(`/chapters/${id}`)
+}
+
+/**
+ * 获取章节内容（游客）
+ */
+export const getChapterDetailGuestApi = (id: string) => {
+    return request.get<ApiResponse<BookChapterResponse>>(`/chapters/${id}/guest`)
+}
+
+/**
+ * 购买章节
+ */
+export const buyChapterApi = (data: BuyChapterRequest) => {
+    return request.post<ApiResponse<string>>('/buy/chapter', data)
 }

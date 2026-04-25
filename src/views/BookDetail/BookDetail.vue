@@ -95,31 +95,14 @@ const loadReadingProgress = () => {
 
 const handleContinueReading = () => {
   if (lastReadChapter.value) {
-    // Navigate to reader page with last read chapter
-    console.log('Continue reading:', lastReadChapter.value.id);
+    router.push(`/book/${bookId}/chapter/${lastReadChapter.value.id}`);
   } else if (chapters.value.length > 0) {
-    // Start from first chapter
-    console.log('Start reading:', chapters.value[0].chapter_id);
+    router.push(`/book/${bookId}/chapter/${chapters.value[0].chapter_id}`);
   }
 };
 
 const handleChapterSelect = (chapter: BookChapterResponse) => {
-  // Save progress and navigate
-  localStorage.setItem(`read_progress_${bookId}`, JSON.stringify({
-    id: chapter.chapter_id,
-    title: chapter.title,
-    time: new Date().toISOString()
-  }));
-  lastReadChapter.value = { id: chapter.chapter_id, title: chapter.title };
-  
-  // 模拟已读状态记录（为了让列表实时变色）
-  const readList = JSON.parse(localStorage.getItem(`read_list_${bookId}`) || '[]');
-  if (!readList.includes(chapter.chapter_id)) {
-    readList.push(chapter.chapter_id);
-    localStorage.setItem(`read_list_${bookId}`, JSON.stringify(readList));
-  }
-  
-  console.log('Navigate to chapter:', chapter.chapter_id);
+  router.push(`/book/${bookId}/chapter/${chapter.chapter_id}`);
 };
 
 onMounted(() => {
