@@ -1,26 +1,60 @@
 :root {
-  /* 主色 */
-  --color-primary: rgb(0, 0,0);
-  --color-primary-hover: rgb(255, 201, 201);
-  --color-primary-light: rgb(176, 37, 37);
+  /* 主体色 - 文学墨红风格 */
+  --color-primary: #8c1b1b;
+  /* 墨红：用于标题强调、主按钮、激活态 */
+  --color-primary-hover: #a62424;
+  /* 悬停态 */
+  --color-primary-active: #6d1616;
+  /* 点击态 */
+  --color-primary-light: #fdf2f2;
+  /* 浅墨红：背景色或弱强调 */
 
-  /* 成功 / 警告 / 错误 / 信息 */
-  --color-success: var(--green-6);
-  --color-warning: var(--yellow-7);
-  --color-danger: var(--red-6);
-  --color-info: var(--blue-6);
+  --color-secondary: #5c4033;
+  /* 木色/深褐：用于次要重点、边框或图标 */
+  --color-accent: #d4af37;
+  /* 古金：用于 VIP、勋章、特殊标记 */
 
-  /* 中性色（背景/文字） */
-  --color-bg: var(--gray-2);
-  --color-surface: #f9fafb;
+  /* 状态色 - 适度降低饱和度以匹配文学风 */
+  --color-success: #4a7c44;
+  /* 竹青 */
+  --color-warning: #c29033;
+  /* 琥珀 */
+  --color-danger: #b02525;
+  /* 朱红 */
+  --color-info: #4a6b8c;
+  /* 黛蓝 */
 
-  --color-text: var(--gray-12);
-  --color-text-secondary: var(--gray-9);
-  --color-border: var(--gray-3);
+  /* 中性色 (背景/文字/边框) */
+  --color-bg: #fdfaf5;
+  /* 宣纸色：全站主体背景 */
+  --color-surface: #ffffff;
+  /* 纯白：卡片、弹窗等容器背景 */
+
+  --color-text: #1a1a1a;
+  /* 浓墨：主要正文 */
+  --color-text-secondary: #555555;
+  /* 深灰：次要说明、描述 */
+  --color-text-muted: #999999;
+  /* 浅灰：占位符、禁用态、时间 */
+
+  --color-border: #e5dec9;
+  /* 绢帛色：默认分割线、边框 */
+  --color-border-hover: #d0c0a0;
+  /* 强化边框 */
+  --color-border-light: #f0ede4;
+  /* 极浅边框 */
+
+  /* 阴影 - 柔和扩散 */
+  --shadow-sm: 0 1px 3px rgba(140, 27, 27, 0.05);
+  --shadow-md: 0 4px 12px rgba(92, 64, 51, 0.08);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.1);
+
+  /* 布局 */
+  --page-width: 1200px;
 
   /* 字体族 */
-  --font-sans: system-ui, -apple-system, "Segoe UI",
-               Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-serif: 'SimSun', 'STSong', 'Songti SC', serif;
 
   /* 字号 */
   --font-xs: 12px;
@@ -58,16 +92,8 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 999px;
-
-  /* 阴影 */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 10px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 20px rgba(0,0,0,0.12);
-  
-  /* 布局 */
-  --page-width: 1200px;
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }

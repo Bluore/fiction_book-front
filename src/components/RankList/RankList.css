@@ -40,13 +40,13 @@
 }
 
 .rank-comp li.sort-option.select {
-  color: red;
-  border-bottom: 2px double red;
+  color: var(--color-primary);
+  border-bottom: 2px double var(--color-primary);
 }
 
 .rank-comp li.sort-option:hover {
-  color: blue;
-  border-bottom: 2px double red;
+  color: var(--color-primary-hover);
+  border-bottom: 2px double var(--color-primary);
 }
 
 .rank-comp li.sort-option>div {
@@ -58,7 +58,7 @@
   height: 2px;
   width: auto;
   opacity: 0.5;
-  border-top: 2px dotted black;
+  border-top: 2px dotted var(--color-border);
   margin: 0 5px 5px 5px;
 }
 
@@ -106,7 +106,7 @@
 .rank-comp .top-card .book-division {
   width: 2px;
   height: 120px;
-  border-left: 2px dashed black;
+  border-left: 2px dashed var(--color-border);
   margin: 2px 3px;
 }
 
@@ -179,7 +179,7 @@
 }
 
 .rank-comp .card .info-area .info-title {
-  color: black;
+  color: var(--color-text);
   font: 800 1.5em 'SimSun';
   margin: 0;
   white-space: nowrap;
@@ -188,7 +188,7 @@
 }
 
 .rank-comp .card .info-area .info-desc {
-  color: grey;
+  color: var(--color-text-secondary);
   height: 55px;
   font: 300 0.9em 'SimSun';
   margin: 0;

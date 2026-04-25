@@ -162,8 +162,8 @@ const formatWords = (words: number) => {
 }
 
 .vip-badge {
-  background: #f1c40f;
-  color: #333;
+  background: var(--color-accent);
+  color: var(--color-secondary);
   padding: 2px 8px;
   border-radius: 2px;
   font-size: 12px;

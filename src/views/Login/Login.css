@@ -118,7 +118,7 @@
 
 :deep(.n-button--primary-type) {
     --n-color: var(--color-primary) !important;
-    --n-color-hover: #333 !important;
-    --n-color-pressed: #000 !important;
+    --n-color-hover: var(--color-primary-hover) !important;
+    --n-color-pressed: var(--color-primary-active) !important;
     --n-border: 1px solid var(--color-primary) !important;
 }
