@@ -46,7 +46,13 @@
         <h2 class="section-title">我的书架</h2>
         <span class="more-link">查看全部</span>
       </div>
-      <div class="book-grid">
+      <div v-if="bookshelfLoading" class="loading-state">
+        加载中...
+      </div>
+      <div v-else-if="bookshelfBooks.length === 0" class="empty-state">
+        暂无书架书籍
+      </div>
+      <div v-else class="book-grid">
         <PaperBookCard 
           v-for="book in bookshelfBooks" 
           :key="book.id"
@@ -63,13 +69,14 @@
 import { ref, computed, onMounted } from 'vue';
 import PaperBookCard from './PaperBookCard.vue';
 import { mockBooks } from '@/mocks/books';
-import { getReadingHistoryApi, type BookResponse } from '@/api/book';
+import { getReadingHistoryApi, getBookshelfApi, type BookResponse } from '@/api/book';
 
 const recentBooks = ref<BookResponse[]>([]);
+const bookshelfBooks = ref<BookResponse[]>([]);
 const loading = ref(true);
+const bookshelfLoading = ref(true);
 
 const purchasedBooks = computed(() => mockBooks.slice(3, 6));
-const bookshelfBooks = computed(() => mockBooks.slice(6, 9));
 
 const fetchRecentBooks = async () => {
   try {
@@ -83,8 +90,21 @@ const fetchRecentBooks = async () => {
   }
 };
 
+const fetchBookshelfBooks = async () => {
+  try {
+    bookshelfLoading.value = true;
+    const res = await getBookshelfApi({ page: 1, size: 3 });
+    bookshelfBooks.value = res.data.data.books;
+  } catch (error) {
+    console.error('Failed to fetch bookshelf books:', error);
+  } finally {
+    bookshelfLoading.value = false;
+  }
+};
+
 onMounted(() => {
   fetchRecentBooks();
+  fetchBookshelfBooks();
 });
 </script>
 

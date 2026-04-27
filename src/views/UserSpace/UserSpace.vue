@@ -31,11 +31,9 @@ import { ref, computed, defineAsyncComponent, onMounted } from 'vue'
 import UserSpaceHeader from './components/UserSpaceHeader.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import { mockUser } from '@/mocks/user'
-import type { UserInfo } from '@/mocks/user'
 import { getUserInfoApi } from '@/api/auth'
+import { userInfo, setUserInfo } from '@/utils/auth'
 import './UserSpace.css'
-
-const userInfo = ref<UserInfo | null>(null)
 
 const activeTab = ref('overview')
 
@@ -62,13 +60,13 @@ const fetchUserInfo = async () => {
   try {
     const res = await getUserInfoApi()
     if (res.data.code === 200) {
-      userInfo.value = res.data.data
+      setUserInfo(res.data.data)
     } else {
-      userInfo.value = mockUser
+      setUserInfo(mockUser)
     }
   } catch (error) {
     console.error('获取用户信息失败:', error)
-    userInfo.value = mockUser
+    setUserInfo(mockUser)
   }
 }
 

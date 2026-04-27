@@ -98,6 +98,13 @@ export const getReadingHistoryApi = (params?: { page?: number; size?: number }) 
 }
 
 /**
+ * 获取用户书架列表 (认证)
+ */
+export const getBookshelfApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/bookshelf/list', { params })
+}
+
+/**
  * 购买章节
  */
 export const buyChapterApi = (data: BuyChapterRequest) => {

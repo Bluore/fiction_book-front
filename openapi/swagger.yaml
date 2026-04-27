@@ -153,6 +153,13 @@ definitions:
     - password
     - username
     type: object
+  dto.DeleteUserBookshelfRequest:
+    properties:
+      book_id:
+        type: string
+    required:
+    - book_id
+    type: object
   dto.EmailVerifyRequest:
     properties:
       email:
@@ -205,19 +212,6 @@ definitions:
         type: string
       user_id:
         type: string
-    type: object
-  dto.ListUserBookshelfResponse:
-    properties:
-      books:
-        items:
-          $ref: '#/definitions/dto.UserBookshelfResponse'
-        type: array
-      count:
-        type: integer
-      page:
-        type: integer
-      size:
-        type: integer
     type: object
   dto.ListUserHistoryResponse:
     properties:
@@ -336,17 +330,6 @@ definitions:
       vip_level:
         type: integer
       vip_mark:
-        type: string
-    type: object
-  dto.UserBookshelfResponse:
-    properties:
-      book_id:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: string
-      user_id:
         type: string
     type: object
   dto.UserHistoryResponse:
@@ -923,7 +906,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.ListUserBookshelfResponse'
+                  $ref: '#/definitions/dto.BookListResponse'
               type: object
         "400":
           description: 参数错误
@@ -976,6 +959,91 @@ paths:
       security:
       - Bearer: []
       summary: 添加到书架
+      tags:
+      - 书架管理
+  /api/v1/bookshelf/delete:
+    post:
+      consumes:
+      - application/json
+      description: 从书架中删除（认证）
+      parameters:
+      - description: 删除书籍的id
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DeleteUserBookshelfRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 登录已失效
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4001":
+          description: 书籍未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 从书架中删除
+      tags:
+      - 书架管理
+  /api/v1/bookshelf/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取登录用户的书架列表（分页）
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.BookListResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 登录已失效
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 获取自己书架
       tags:
       - 书架管理
   /api/v1/buy/book:
@@ -1440,7 +1508,7 @@ paths:
           description: 用户不存在
           schema:
             $ref: '#/definitions/response.Response'
-      summary: 获取用户浏览历史
+      summary: 获取用户浏览历史（弃用）
       tags:
       - 历史管理
   /api/v1/orders:
