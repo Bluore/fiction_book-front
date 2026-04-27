@@ -8,6 +8,7 @@
         <PaperBookCard 
           v-for="book in allBooks" 
           :key="book.id"
+          :id="book.id"
           :title="book.name"
           :cover-image="book.cover_image"
         />

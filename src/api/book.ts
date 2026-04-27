@@ -91,6 +91,13 @@ export const getChapterInfoApi = (id: string) => {
 }
 
 /**
+ * 获取阅读历史列表
+ */
+export const getReadingHistoryApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/history/list', { params })
+}
+
+/**
  * 购买章节
  */
 export const buyChapterApi = (data: BuyChapterRequest) => {

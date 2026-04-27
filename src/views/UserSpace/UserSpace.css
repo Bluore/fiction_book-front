@@ -88,11 +88,11 @@
 }
 
 /* Paper Section Styling (Common for Overview) */
-.paper-section {
+.user-space .paper-section {
   margin-bottom: 60px;
 }
 
-.section-header {
+.user-space .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -101,7 +101,7 @@
   padding-left: 16px;
 }
 
-.section-title {
+.user-space .section-title {
   font-size: var(--font-2xl);
   margin: 0;
   font-weight: var(--font-bold);
@@ -109,7 +109,7 @@
   font-family: var(--font-serif);
 }
 
-.more-link {
+.user-space .more-link {
   font-size: var(--font-sm);
   color: var(--color-text-secondary);
   text-decoration: underline;
@@ -117,11 +117,11 @@
   cursor: pointer;
 }
 
-.more-link:hover {
+.user-space .more-link:hover {
   color: var(--color-primary);
 }
 
-.book-grid {
+.user-space .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 40px;
@@ -129,15 +129,15 @@
 }
 
 @media (max-width: 768px) {
-  .content-container {
+  .user-space .content-container {
     padding: 20px;
   }
 
-  .home-tabs {
+  .user-space .home-tabs {
     gap: 20px;
   }
 
-  .book-grid {
+  .user-space .book-grid {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
   }
