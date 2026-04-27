@@ -16,26 +16,23 @@
             <span v-if="user.vip_level > 0" class="vip-badge">VIP {{ user.vip_level }}</span>
           </div>
           <p class="description">{{ user.description || '暂无个人说明' }}</p>
-          <div class="vip-expiry" v-if="user.vip_level > 0">
-            VIP 有效期至: {{ user.vip_expire_at }}
-          </div>
         </div>
       </div>
       
       <div class="user-stats">
         <div class="stat-item">
           <span class="stat-label">G币</span>
-          <span class="stat-value">{{ user.g_coins }}</span>
+          <span class="stat-value">{{ user.gold }}</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <span class="stat-label">阅读字数</span>
-          <span class="stat-value">{{ formatWords(user.read_words) }}</span>
+          <span class="stat-value">{{ formatWords(user.read_words_num) }}</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <span class="stat-label">阅读书籍</span>
-          <span class="stat-value">{{ user.read_books }}</span>
+          <span class="stat-value">{{ user.read_books_num }}</span>
         </div>
       </div>
     </div>

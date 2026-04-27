@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 export interface UserInfo {
-  id: string
+  id?: string
   username: string
   email: string
   age: number
@@ -10,6 +10,12 @@ export interface UserInfo {
   cover_image: string
   created_at: string
   updated_at: string
+  gold: number
+  vip_mark: string
+  vip_level: number
+  vip_active_at: string
+  read_books_num: number
+  read_words_num: number
 }
 
 // 检查本地存储是否有 Token 来初始化登录状态

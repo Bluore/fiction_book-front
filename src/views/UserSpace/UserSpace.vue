@@ -1,6 +1,6 @@
 <template>
   <div class="user-space paper-theme">
-    <UserSpaceHeader :user="mockUser" />
+    <UserSpaceHeader v-if="userInfo" :user="userInfo" />
     
     <div class="content-container">
       <!-- Tab Navigation -->
@@ -27,11 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent } from 'vue'
+import { ref, computed, defineAsyncComponent, onMounted } from 'vue'
 import UserSpaceHeader from './components/UserSpaceHeader.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import { mockUser } from '@/mocks/user'
+import type { UserInfo } from '@/mocks/user'
+import { getUserInfoApi } from '@/api/auth'
 import './UserSpace.css'
+
+const userInfo = ref<UserInfo | null>(null)
 
 const activeTab = ref('overview')
 
@@ -52,5 +56,23 @@ const activeComponent = computed(() => {
     case 'recharge': return defineAsyncComponent(() => import('./components/HomeRecharge.vue'))
     default: return defineAsyncComponent(() => import('./components/HomeOverview.vue'))
   }
+})
+
+const fetchUserInfo = async () => {
+  try {
+    const res = await getUserInfoApi()
+    if (res.data.code === 200) {
+      userInfo.value = res.data.data
+    } else {
+      userInfo.value = mockUser
+    }
+  } catch (error) {
+    console.error('获取用户信息失败:', error)
+    userInfo.value = mockUser
+  }
+}
+
+onMounted(() => {
+  fetchUserInfo()
 })
 </script>

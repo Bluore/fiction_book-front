@@ -379,6 +379,33 @@ definitions:
       username:
         type: string
     type: object
+  dto.UserStatResponse:
+    properties:
+      age:
+        type: integer
+      asset_gold:
+        type: integer
+      cover_image:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      profile_image:
+        type: string
+      read_books_num:
+        type: integer
+      read_words_num:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
   response.Response:
     properties:
       code:
@@ -743,6 +770,80 @@ paths:
       summary: 获取书籍列表
       tags:
       - 书籍管理
+  /api/v1/books/own/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取书籍owner_id为该用户的书籍（认证）
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 封面URL
+          schema:
+            $ref: '#/definitions/dto.UploadBookCoverResponse'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 用户登录失效
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 获取用户创作的书籍
+      tags:
+      - 书籍管理
+  /api/v1/books/thermal/daily:
+    get:
+      consumes:
+      - application/json
+      description: 榜单每5分钟刷新，缓存优化
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 封面URL
+          schema:
+            $ref: '#/definitions/dto.UploadBookCoverResponse'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取每日热度榜单
+      tags:
+      - 书籍管理
   /api/v1/bookshelf/{user_id}:
     get:
       consumes:
@@ -941,6 +1042,10 @@ paths:
             $ref: '#/definitions/response.Response'
         "4002":
           description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4009":
+          description: 书籍已购买
           schema:
             $ref: '#/definitions/response.Response'
         "4017":
@@ -1242,40 +1347,6 @@ paths:
       summary: 创建书籍章节
       tags:
       - 章节管理
-  /api/v1/chapters/thermal/daily:
-    get:
-      consumes:
-      - application/json
-      description: 榜单每5分钟刷新，缓存优化
-      parameters:
-      - default: 1
-        description: 页码
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: 每页数量
-        in: query
-        name: size
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 封面URL
-          schema:
-            $ref: '#/definitions/dto.UploadBookCoverResponse'
-        "400":
-          description: 请求参数错误
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: 服务器内部错误
-          schema:
-            $ref: '#/definitions/response.Response'
-      summary: 获取每日热度榜单
-      tags:
-      - 书籍管理
   /api/v1/history/{user_id}:
     get:
       consumes:
@@ -1911,7 +1982,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/dto.UserResponse'
+                  $ref: '#/definitions/dto.UserStatResponse'
               type: object
         "400":
           description: 参数错误
@@ -1931,7 +2002,7 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
-      summary: 获取当前用户信息
+      summary: 获取当前用户详情信息
       tags:
       - 用户管理
   /api/v1/users/information:
