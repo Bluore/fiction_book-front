@@ -16,6 +16,11 @@ export const getUserInfoApi = () => {
   return request.get<ApiResponse>('/users/info')
 }
 
+// 更新用户信息接口
+export const updateUserInfoApi = (data: { username?: string; description?: string; age?: number }) => {
+  return request.put<ApiResponse>('/users/information', data)
+}
+
 /**
  * 根据用户ID获取指定用户信息 (如作者信息)
  */
