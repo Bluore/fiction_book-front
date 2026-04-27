@@ -98,6 +98,13 @@ export const getReadingHistoryApi = (params?: { page?: number; size?: number }) 
 }
 
 /**
+ * 添加到书架
+ */
+export const addToBookshelfApi = (book_id: string) => {
+    return request.post<ApiResponse<any>>('/bookshelf/add', { book_id })
+}
+
+/**
  * 获取用户书架列表 (认证)
  */
 export const getBookshelfApi = (params?: { page?: number; size?: number }) => {

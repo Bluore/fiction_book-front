@@ -27,7 +27,7 @@
       <p class="book-description">{{ book.description }}</p>
       
       <div class="book-actions">
-        <button class="btn-text">加入书架</button>
+        <button class="btn-text" @click="handleAddToBookshelf">加入书架</button>
         <button class="btn-text">分享书籍</button>
       </div>
     </div>
@@ -35,13 +35,29 @@
 </template>
 
 <script setup lang="ts">
+import { addToBookshelfApi } from '@/api/book';
 import type { BookResponse } from '@/api/book';
 import type { UserInfo } from '@/utils/auth';
 
-defineProps<{
+const props = defineProps<{
   book: BookResponse;
   author: UserInfo | null;
 }>();
+
+const message = useMessage();
+
+const handleAddToBookshelf = async () => {
+  try {
+    const res = await addToBookshelfApi(props.book.id);
+    if (res.data.code === 200) {
+      message.success('已成功加入书架');
+    } else {
+      message.error(res.data.message || '加入书架失败');
+    }
+  } catch (error: any) {
+    message.error(error.message || '加入书架失败，请稍后重试');
+  }
+};
 
 const formatAmount = (amount: number) => {
   if (amount >= 10000) {
