@@ -94,8 +94,7 @@ const handlePageChange = (page: number) => {
 }
 
 const handleCreateBook = () => {
-  // For now just a placeholder
-  message.info('新建作品功能开发中...')
+  router.push({ name: 'creator-book-create' })
 }
 
 const goToEditor = (id: string) => {

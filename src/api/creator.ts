@@ -12,8 +12,8 @@ export const getCreatorBooksApi = (params?: { page?: number; size?: number }) =>
 /**
  * 创建新书籍
  */
-export const createBookApi = (data: Partial<BookResponse>) => {
-    return request.post<ApiResponse<BookResponse>>('/creator/books', data)
+export const createBookApi = (data: { name: string; description: string; price: number }) => {
+    return request.post<ApiResponse<BookResponse>>('/books/create', data)
 }
 
 /**

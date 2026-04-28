@@ -41,8 +41,12 @@ const router = createRouter({
         {
             path: '/creator',
             name: 'creator',
-            component: () => import('@/views/Creator/CreatorHome.vue'),
-            children: []
+            component: () => import('@/views/Creator/CreatorHome.vue')
+        },
+        {
+            path: '/creator/book/create',
+            name: 'creator-book-create',
+            component: () => import('@/views/Creator/CreateBook.vue')
         },
         {
             path: '/creator/book/:id',
