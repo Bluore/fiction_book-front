@@ -28,6 +28,7 @@
   padding: 40px;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 /* Home Tabs */

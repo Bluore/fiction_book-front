@@ -26,3 +26,4 @@ dist-ssr
 .claude*
 .trae*
 components.d.ts
+auto-imports.d.ts
