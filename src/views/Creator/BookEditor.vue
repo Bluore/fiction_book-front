@@ -15,7 +15,7 @@
           <div class="sticky-content">
             <div class="cover-edit">
               <PaperBookCover :cover-image="book.cover_image" :width="184" :height="230" />
-              <button class="text-btn underline mt-4">修改封面</button>
+              <button class="text-btn underline mt-4" @click="handleChangeCover">修改封面</button>
             </div>
             
             <div class="form-group mt-8">
@@ -58,6 +58,13 @@
         </main>
       </div>
     </div>
+
+    <CoverUploader 
+      ref="uploaderRef" 
+      :book-id="bookId" 
+      @success="handleCoverSuccess" 
+    />
+
     <Footer />
   </div>
 </template>
@@ -67,6 +74,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import PaperBookCover from '@/components/PaperBookCover/PaperBookCover.vue'
+import CoverUploader from './components/CoverUploader.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import { getBookDetailApi, getBookChaptersApi } from '@/api/book'
 import { updateBookApi } from '@/api/creator'
@@ -79,6 +87,7 @@ const message = useMessage()
 const bookId = route.params.id as string
 const book = ref<BookResponse | null>(null)
 const chapters = ref<BookChapterResponse[]>([])
+const uploaderRef = ref<any>(null)
 
 const fetchData = async () => {
   try {
@@ -113,6 +122,16 @@ const handleSaveBook = async () => {
     message.success('保存成功')
   } catch (error) {
     message.error('保存失败')
+  }
+}
+
+const handleChangeCover = () => {
+  uploaderRef.value?.open()
+}
+
+const handleCoverSuccess = (url: string) => {
+  if (book.value) {
+    book.value.cover_url = url
   }
 }
 

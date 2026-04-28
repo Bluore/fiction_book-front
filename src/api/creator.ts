@@ -24,6 +24,19 @@ export const updateBookApi = (id: string, data: Partial<BookResponse>) => {
 }
 
 /**
+ * 上传书籍封面
+ */
+export const uploadBookCoverApi = (id: string, file: File) => {
+    const formData = new FormData()
+    formData.append('cover_image', file)
+    return request.post<ApiResponse<any>>(`/books/${id}/cover`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
+
+/**
  * 删除书籍
  */
 export const deleteBookApi = (id: string) => {
