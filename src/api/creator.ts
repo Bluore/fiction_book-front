@@ -1,12 +1,12 @@
 import request from './request'
 import type { ApiResponse } from './request'
-import type { BookResponse, BookChapterResponse } from './book'
+import type { BookResponse, BookChapterResponse, BookListResponse } from './book'
 
 /**
  * 获取创作者自己的书籍列表
  */
-export const getCreatorBooksApi = () => {
-    return request.get<ApiResponse<{ books: BookResponse[] }>>('/creator/books')
+export const getCreatorBooksApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/own/list', { params })
 }
 
 /**

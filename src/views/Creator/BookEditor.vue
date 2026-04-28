@@ -2,6 +2,8 @@
   <div class="book-editor paper-theme">
     <div class="content-container">
       <nav class="breadcrumb">
+        <button class="text-btn underline" @click="goHome">首页</button>
+        <span class="separator">/</span>
         <button class="text-btn underline" @click="goBack">创作中心</button>
         <span class="separator">/</span>
         <span class="current">{{ book?.name || '作品编辑' }}</span>
@@ -99,6 +101,10 @@ const fetchData = async () => {
 
 const goBack = () => {
   router.push({ name: 'creator' })
+}
+
+const goHome = () => {
+  router.push({ name: 'home' })
 }
 
 const handleSaveBook = async () => {

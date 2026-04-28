@@ -2,7 +2,11 @@
   <div class="creator-home paper-theme">
     <div class="content-container">
       <header class="creator-header">
-        <h1 class="page-title">创作中心</h1>
+        <div class="header-left">
+          <button class="text-btn underline" @click="goHome">首页</button>
+          <span class="separator">/</span>
+          <h1 class="page-title">创作中心</h1>
+        </div>
         <button class="text-btn underline" @click="handleCreateBook">新建作品</button>
       </header>
 
@@ -29,6 +33,16 @@
         <p>还没有创作任何作品，开始你的第一个故事吧。</p>
         <button class="text-btn underline" @click="handleCreateBook">立即创作</button>
       </div>
+
+      <!-- Pagination -->
+      <div v-if="pagination.count > pagination.size" class="pagination-container">
+        <n-pagination
+          v-model:page="pagination.page"
+          :item-count="pagination.count"
+          :page-size="pagination.size"
+          @update:page="handlePageChange"
+        />
+      </div>
     </div>
     <Footer />
   </div>
@@ -47,20 +61,36 @@ import type { BookResponse } from '@/api/book'
 const router = useRouter()
 const message = useMessage()
 const books = ref<BookResponse[]>([])
+const pagination = ref({
+  page: 1,
+  size: 10,
+  count: 0
+})
 
 const fetchBooks = async () => {
   try {
-    const res = await getCreatorBooksApi()
+    const res = await getCreatorBooksApi({
+      page: pagination.value.page,
+      size: pagination.value.size
+    })
     if (res.data.code === 200) {
       books.value = res.data.data.books
+      pagination.value.count = res.data.data.count
     } else {
       // Fallback to mock data for current user
       books.value = mockBooks.filter(b => b.owner_id === 'current-user-id') as any
+      pagination.value.count = books.value.length
     }
   } catch (error) {
     console.error('获取作品失败:', error)
     books.value = mockBooks.filter(b => b.owner_id === 'current-user-id') as any
+    pagination.value.count = books.value.length
   }
+}
+
+const handlePageChange = (page: number) => {
+  pagination.value.page = page
+  fetchBooks()
 }
 
 const handleCreateBook = () => {
@@ -70,6 +100,10 @@ const handleCreateBook = () => {
 
 const goToEditor = (id: string) => {
   router.push({ name: 'creator-book-editor', params: { id } })
+}
+
+const goHome = () => {
+  router.push({ name: 'home' })
 }
 
 onMounted(() => {

@@ -2,6 +2,8 @@
   <div class="chapter-editor paper-theme">
     <header class="editor-header">
       <div class="header-left">
+        <button class="text-btn underline" @click="goHome">首页</button>
+        <span class="separator">/</span>
         <button class="text-btn underline" @click="goBack">返回作品</button>
         <span class="separator">|</span>
         <input type="text" v-model="chapter.title" class="title-input" placeholder="请输入章节标题" />
@@ -98,6 +100,10 @@ const wordCount = computed(() => {
 
 const goBack = () => {
   router.push({ name: 'creator-book-editor', params: { id: bookId } })
+}
+
+const goHome = () => {
+  router.push({ name: 'home' })
 }
 
 const handleSave = async () => {

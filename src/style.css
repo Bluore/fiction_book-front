@@ -63,6 +63,9 @@
   --font-lg: 18px;
   --font-xl: 20px;
   --font-2xl: 24px;
+  --font-3xl: 32px;
+  --font-4xl: 40px;
+  --font-5xl: 48px;
 
   /* 字重 */
   --font-light: 300;
