@@ -47,7 +47,7 @@
               </div>
               <div class="chapter-meta">
                 <span class="chapter-price">{{ chapter.price }} 点</span>
-                <span class="chapter-vip">{{ chapter.vip_level === 'free' ? '免费' : chapter.vip_level.toUpperCase() }}</span>
+                <span class="chapter-vip">{{ getVipLabel(chapter.vip_level) }}</span>
               </div>
               <div class="chapter-actions">
                 <button class="text-btn underline" @click="editChapter(chapter.chapter_id)">编辑内容</button>
@@ -89,6 +89,18 @@ const book = ref<BookResponse | null>(null)
 const chapters = ref<BookChapterResponse[]>([])
 const uploaderRef = ref<any>(null)
 
+// VIP 等级映射关系
+const VIP_LEVEL_MAP: Record<string, string> = {
+  '': '游客可看',
+  'vip_0': '免费',
+  'vip_1': 'VIP',
+  'vip_2': 'SVIP'
+}
+
+const getVipLabel = (value: string) => {
+  return VIP_LEVEL_MAP[value] || value
+}
+
 const fetchData = async () => {
   try {
     const [bookRes, chaptersRes] = await Promise.all([
@@ -119,7 +131,15 @@ const goHome = () => {
 const handleSaveBook = async () => {
   if (!book.value) return
   try {
-    message.success('保存成功')
+    const res = await updateBookApi(bookId, {
+      name: book.value.name,
+      description: book.value.description
+    })
+    if (res.data.code === 200) {
+      message.success('保存成功')
+    } else {
+      message.error(res.data.message || '保存失败')
+    }
   } catch (error) {
     message.error('保存失败')
   }
@@ -131,7 +151,7 @@ const handleChangeCover = () => {
 
 const handleCoverSuccess = (url: string) => {
   if (book.value) {
-    book.value.cover_url = url
+    book.value.cover_image = url
   }
 }
 

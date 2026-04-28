@@ -12,7 +12,13 @@
         <div class="settings-trigger" @click="showSettings = !showSettings">
           <button class="text-btn underline">章节设置</button>
         </div>
-        <button class="text-btn underline save-btn" @click="handleSave">保存修改</button>
+        <button 
+          class="text-btn underline save-btn" 
+          :disabled="saving" 
+          @click="handleSave"
+        >
+          {{ saving ? '保存中...' : '保存修改' }}
+        </button>
       </div>
     </header>
 
@@ -46,10 +52,9 @@
           <div class="form-group">
             <label>所需 VIP 等级</label>
             <select v-model="chapter.vip_level" class="paper-select">
-              <option value="free">免费</option>
-              <option value="vip_1">VIP 1</option>
-              <option value="vip_2">VIP 2</option>
-              <option value="vip_3">VIP 3</option>
+              <option v-for="opt in VIP_LEVEL_OPTIONS" :key="opt.value" :value="opt.value">
+                {{ opt.label }}
+              </option>
             </select>
           </div>
         </div>
@@ -63,6 +68,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import { getChapterDetailApi } from '@/api/book'
+import { updateChapterApi } from '@/api/creator'
 import type { BookChapterResponse } from '@/api/book'
 
 const route = useRoute()
@@ -82,6 +88,19 @@ const chapter = ref<BookChapterResponse>({
 })
 
 const showSettings = ref(false)
+const saving = ref(false)
+
+// VIP 等级映射关系
+const VIP_LEVEL_OPTIONS = [
+  { label: '游客可看', value: '' },
+  { label: '免费', value: 'vip_0' },
+  { label: 'VIP', value: 'vip_1' },
+  { label: 'SVIP', value: 'vip_2' }
+]
+
+const getVipLabel = (value: string) => {
+  return VIP_LEVEL_OPTIONS.find(opt => opt.value === value)?.label || value
+}
 
 const fetchData = async () => {
   try {
@@ -107,7 +126,32 @@ const goHome = () => {
 }
 
 const handleSave = async () => {
-  message.success('保存成功')
+  if (!chapter.value.title.trim()) {
+    message.warning('请输入章节标题')
+    return
+  }
+  
+  saving.value = true
+  try {
+    const res = await updateChapterApi(chapterId, {
+      id: chapterId,
+      title: chapter.value.title,
+      content: chapter.value.content || '',
+      price: chapter.value.price,
+      vip_level: chapter.value.vip_level
+    })
+    
+    if (res.data.code === 200) {
+      message.success('保存成功')
+    } else {
+      message.error(res.data.message || '保存失败')
+    }
+  } catch (error) {
+    console.error('保存章节失败:', error)
+    message.error('保存失败，请稍后重试')
+  } finally {
+    saving.value = false
+  }
 }
 
 const handleInput = () => {

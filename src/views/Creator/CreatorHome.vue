@@ -80,6 +80,7 @@ const fetchBooks = async () => {
       // Fallback to mock data for current user
       books.value = mockBooks.filter(b => b.owner_id === 'current-user-id') as any
       pagination.value.count = books.value.length
+      message.warning('无法从服务器获取作品列表，已加载本地数据')
     }
   } catch (error) {
     console.error('获取作品失败:', error)
