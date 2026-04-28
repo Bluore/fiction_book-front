@@ -17,5 +17,20 @@ export const mockChapters: Record<string, { Chapters: BookChapter[] }> = {
       vip_level: i > 10 ? "vip_1" : "free",
       price: i > 10 ? 10 : 0,
     }))
-  }
+  },
+  ...Object.fromEntries(
+    [2, 3, 4, 5].map(bookIdx => [
+      `book-${bookIdx}`,
+      {
+        Chapters: Array.from({ length: 10 }, (_, i) => ({
+          chapter_id: `chapter-${bookIdx}-${i + 1}`,
+          title: `第 ${i + 1} 章：新篇章 ${i + 1}`,
+          content: `这是作品 book-${bookIdx} 的第 ${i + 1} 章内容。`,
+          order: i + 1,
+          vip_level: i > 5 ? "vip_1" : "free",
+          price: i > 5 ? 20 : 0,
+        }))
+      }
+    ])
+  )
 };

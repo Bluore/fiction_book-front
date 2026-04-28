@@ -37,6 +37,22 @@ const router = createRouter({
             path: '/test',
             name: 'test',
             component: () => import('@/views/tester.vue')
+        },
+        {
+            path: '/creator',
+            name: 'creator',
+            component: () => import('@/views/Creator/CreatorHome.vue'),
+            children: []
+        },
+        {
+            path: '/creator/book/:id',
+            name: 'creator-book-editor',
+            component: () => import('@/views/Creator/BookEditor.vue')
+        },
+        {
+            path: '/creator/book/:id/chapter/:chapterId',
+            name: 'creator-chapter-editor',
+            component: () => import('@/views/Creator/ChapterEditor.vue')
         }
     ]
 })

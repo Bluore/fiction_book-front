@@ -1,0 +1,166 @@
+.chapter-editor {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-header {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px dashed var(--color-border);
+  z-index: 10;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.separator {
+  color: var(--color-border);
+}
+
+.title-input {
+  background: none;
+  border: none;
+  font-family: var(--font-serif);
+  font-size: var(--font-lg);
+  color: var(--color-text);
+  width: 400px;
+  outline: none;
+}
+
+.editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0;
+  overflow-y: auto;
+  align-items: center;
+}
+
+.content-textarea {
+  width: 800px;
+  max-width: 90%;
+  flex: 1;
+  background: none;
+  border: none;
+  resize: none;
+  outline: none;
+  font-family: var(--font-serif);
+  font-size: var(--font-lg);
+  line-height: 2;
+  color: var(--color-text);
+  padding: 0;
+}
+
+.word-count {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  font-family: var(--font-serif);
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* Settings Panel */
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100%;
+  background-color: var(--color-bg);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  padding: 40px;
+  border-left: 1px dotted var(--color-border);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 12px;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+.paper-input, .paper-select {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px dotted var(--color-border);
+  padding: 8px 0;
+  font-family: var(--font-serif);
+  font-size: var(--font-base);
+  color: var(--color-text);
+  outline: none;
+}
+
+.paper-select {
+  cursor: pointer;
+}
+
+/* Transitions */
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.4s ease;
+}
+
+.slide-enter-from, .slide-leave-to {
+  transform: translateX(100%);
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-serif);
+  font-size: var(--font-base);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.text-btn.underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.text-btn:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  .content-textarea {
+    width: 90%;
+  }
+  
+  .title-input {
+    width: 200px;
+  }
+}

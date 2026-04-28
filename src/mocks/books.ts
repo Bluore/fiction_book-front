@@ -20,7 +20,7 @@ export const mockBooks: BookMetadata[] = Array.from({ length: 27 }, (_, i) => ({
     ? "一个平凡少年偶得神秘剑诀，踏上修仙之路，历经磨难终成一代剑仙。"
     : `这是关于修仙的第 ${i + 1} 个故事，充满了奇遇和挑战。`,
   cover_image: `https://picsum.photos/368/460?random=${i + 1}`,
-  owner_id: "owner-123",
+  owner_id: i < 5 ? "current-user-id" : "owner-123", // Make first 5 books belong to current user
   vip_level: `vip_${(i % 3) + 1}`,
   price: 299 + i * 10,
   push_at: "2026-04-20T21:49:17+08:00",

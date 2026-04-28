@@ -1,0 +1,153 @@
+.creator-home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  position: relative;
+}
+
+.creator-home::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 60px 40px;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.creator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 60px;
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 20px;
+}
+
+.page-title {
+  font-size: var(--font-3xl);
+  font-family: var(--font-serif);
+  margin: 0;
+  color: var(--color-text);
+}
+
+/* Button style as requested: text and underline only */
+.text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-serif);
+  font-size: var(--font-base);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.text-btn.underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.text-btn:hover {
+  color: var(--color-primary);
+}
+
+.text-btn.delete:hover {
+  color: #ff4d4f;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 60px 40px;
+}
+
+.creator-book-item {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.book-cover-section {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.book-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.book-name {
+  font-size: var(--font-xl);
+  font-family: var(--font-serif);
+  margin: 0 0 12px 0;
+  color: var(--color-text);
+}
+
+.book-meta {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot-separator {
+  opacity: 0.5;
+}
+
+.book-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: auto;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100px 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-serif);
+}
+
+.empty-state p {
+  font-size: var(--font-lg);
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .creator-book-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .book-meta {
+    justify-content: center;
+  }
+  
+  .book-actions {
+    justify-content: center;
+  }
+}

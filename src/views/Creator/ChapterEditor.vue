@@ -1,0 +1,116 @@
+<template>
+  <div class="chapter-editor paper-theme">
+    <header class="editor-header">
+      <div class="header-left">
+        <button class="text-btn underline" @click="goBack">返回作品</button>
+        <span class="separator">|</span>
+        <input type="text" v-model="chapter.title" class="title-input" placeholder="请输入章节标题" />
+      </div>
+      <div class="header-right">
+        <div class="settings-trigger" @click="showSettings = !showSettings">
+          <button class="text-btn underline">章节设置</button>
+        </div>
+        <button class="text-btn underline save-btn" @click="handleSave">保存修改</button>
+      </div>
+    </header>
+
+    <main class="editor-main">
+      <textarea 
+        v-model="chapter.content" 
+        class="content-textarea" 
+        placeholder="在这里开始你的创作..."
+        @input="handleInput"
+      ></textarea>
+      
+      <div class="word-count">
+        字数：{{ wordCount }}
+      </div>
+    </main>
+
+    <!-- Settings Sidebar (Overlay) -->
+    <Transition name="slide">
+      <div v-if="showSettings" class="settings-panel">
+        <header class="panel-header">
+          <h3>章节设置</h3>
+          <button class="text-btn" @click="showSettings = false">×</button>
+        </header>
+        
+        <div class="panel-content">
+          <div class="form-group">
+            <label>价格 (点数)</label>
+            <input type="number" v-model="chapter.price" class="paper-input" />
+          </div>
+
+          <div class="form-group">
+            <label>所需 VIP 等级</label>
+            <select v-model="chapter.vip_level" class="paper-select">
+              <option value="free">免费</option>
+              <option value="vip_1">VIP 1</option>
+              <option value="vip_2">VIP 2</option>
+              <option value="vip_3">VIP 3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useMessage } from 'naive-ui'
+import { getChapterDetailApi } from '@/api/book'
+import type { BookChapterResponse } from '@/api/book'
+
+const route = useRoute()
+const router = useRouter()
+const message = useMessage()
+
+const bookId = route.params.id as string
+const chapterId = route.params.chapterId as string
+
+const chapter = ref<BookChapterResponse>({
+  chapter_id: chapterId,
+  title: '',
+  content: '',
+  order: 0,
+  vip_level: 'free',
+  price: 0
+})
+
+const showSettings = ref(false)
+
+const fetchData = async () => {
+  try {
+    const res = await getChapterDetailApi(chapterId)
+    if (res.data.code === 200) {
+      chapter.value = res.data.data
+    }
+  } catch (error) {
+    message.error('获取章节失败')
+  }
+}
+
+const wordCount = computed(() => {
+  return chapter.value.content?.length || 0
+})
+
+const goBack = () => {
+  router.push({ name: 'creator-book-editor', params: { id: bookId } })
+}
+
+const handleSave = async () => {
+  message.success('保存成功')
+}
+
+const handleInput = () => {
+  // Can implement auto-save logic here
+}
+
+onMounted(() => {
+  fetchData()
+})
+</script>
+
+<style scoped src="./ChapterEditor.css"></style>
