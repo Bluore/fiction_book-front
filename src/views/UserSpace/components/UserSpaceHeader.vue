@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from 'vue';
-import type { UserInfo } from '@/mocks/user';
+import { ref } from 'vue';
+import type { UserInfo } from '@/utils/auth';
 import AvatarUploadModal from './AvatarUploadModal.vue';
 import { setUserInfo } from '@/utils/auth';
 

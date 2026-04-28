@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { useMessage } from 'naive-ui';
 import { addToBookshelfApi } from '@/api/book';
 import type { BookResponse } from '@/api/book';
 import type { UserInfo } from '@/utils/auth';

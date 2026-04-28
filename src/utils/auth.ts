@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 
 export interface UserInfo {
-  id?: string
+  id: string
   username: string
   email: string
   age: number

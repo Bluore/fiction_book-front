@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineExpose, defineEmits } from 'vue';
+import { ref } from 'vue';
 import { useMessage } from 'naive-ui';
 import { CloudUploadOutline, AddOutline, RemoveOutline, RefreshOutline } from '@vicons/ionicons5';
 import 'vue-cropper/dist/index.css';

@@ -142,7 +142,7 @@ const purchaseMessage = ref('');
 // 处理章节内容分段
 const chapterContent = computed(() => {
   if (!chapter.value?.content) return [];
-  return chapter.value.content.split('\n').filter(p => p.trim() !== '');
+  return chapter.value.content.split('\n').filter((p: string) => p.trim() !== '');
 });
 
 const formatDate = (dateStr?: string) => {
@@ -252,7 +252,7 @@ const updateReadingProgress = () => {
 const goToChapter = (direction: 'prev' | 'next') => {
   if (!chapter.value || allChapters.value.length === 0) return;
   
-  const currentIndex = allChapters.value.findIndex(c => c.chapter_id === chapterId.value);
+  const currentIndex = allChapters.value.findIndex((c: BookChapterResponse) => c.chapter_id === chapterId.value);
   if (currentIndex === -1) return;
 
   let targetChapter;
