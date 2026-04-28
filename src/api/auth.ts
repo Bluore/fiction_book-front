@@ -32,3 +32,12 @@ export const getUserByIdApi = (id: string) => {
 export const sendEmailVerifyApi = (email: string) => {
   return request.post<ApiResponse>('/auth/email/verify', { email })
 }
+
+// 上传头像接口
+export const uploadAvatarApi = (formData: FormData) => {
+  return request.post<ApiResponse>('/users/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

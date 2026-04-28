@@ -7,8 +7,11 @@
     </router-link>
     <div class="header-content">
       <div class="user-basic-info">
-        <div class="avatar-wrapper">
+        <div class="avatar-wrapper" @click="handleAvatarClick">
           <img :src="user.profile_image" :alt="user.username" class="user-avatar" />
+          <div class="avatar-hover-overlay">
+            <span class="hover-text">修改头像</span>
+          </div>
         </div>
         <div class="text-info">
           <div class="name-vip">
@@ -36,18 +39,33 @@
         </div>
       </div>
     </div>
+    
+    <AvatarUploadModal ref="avatarModal" @success="handleAvatarSuccess" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { ref, defineProps } from 'vue';
 import type { UserInfo } from '@/mocks/user';
+import AvatarUploadModal from './AvatarUploadModal.vue';
+import { setUserInfo } from '@/utils/auth';
 
-defineProps<{
+const props = defineProps<{
   user: UserInfo;
 }>();
 
-const formatWords = (words: number) => {
+const avatarModal = ref<any>(null);
+
+const handleAvatarClick = () => {
+  avatarModal.value?.open();
+};
+
+const handleAvatarSuccess = (userData: any) => {
+  setUserInfo(userData);
+};
+
+const formatWords = (words: number | undefined | null) => {
+  if (words === undefined || words === null) return '0';
   if (words >= 10000) {
     return (words / 10000).toFixed(1) + '万';
   }
@@ -136,6 +154,32 @@ const formatWords = (words: number) => {
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
   overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.avatar-wrapper:hover .avatar-hover-overlay {
+  opacity: 1;
+}
+
+.hover-text {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .user-avatar {
