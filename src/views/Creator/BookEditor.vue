@@ -2,11 +2,13 @@
   <div class="book-editor paper-theme">
     <div class="content-container">
       <nav class="breadcrumb">
-        <button class="text-btn underline" @click="goHome">首页</button>
-        <span class="separator">/</span>
-        <button class="text-btn underline" @click="goBack">创作中心</button>
-        <span class="separator">/</span>
-        <span class="current">{{ book?.name || '作品编辑' }}</span>
+        <div class="breadcrumb-left">
+          <button class="text-btn" @click="goHome">首页</button>
+          <span class="separator">/</span>
+          <button class="text-btn" @click="goBack">创作中心</button>
+          <span class="separator">/</span>
+          <h1 class="current-title">{{ book?.name || '作品编辑' }}</h1>
+        </div>
       </nav>
 
       <div class="editor-layout" v-if="book">
@@ -51,7 +53,7 @@
               </div>
               <div class="chapter-actions">
                 <button class="text-btn underline" @click="editChapter(chapter.chapter_id)">编辑内容</button>
-                <button class="text-btn underline delete" @click="deleteChapter(chapter.chapter_id)">删除</button>
+                <!-- <button class="text-btn underline delete disabled" title="目前不提供删除操作" @click="handleReservedDelete">删除</button> -->
               </div>
             </div>
           </div>
@@ -169,9 +171,8 @@ const editChapter = (chapterId: string) => {
   })
 }
 
-const deleteChapter = (chapterId: string) => {
-  chapters.value = chapters.value.filter(c => c.chapter_id !== chapterId)
-  message.success('章节已删除')
+const handleReservedDelete = () => {
+  message.info('该功能目前不提供')
 }
 
 onMounted(() => {

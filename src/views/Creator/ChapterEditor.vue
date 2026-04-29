@@ -2,11 +2,11 @@
   <div class="chapter-editor paper-theme">
     <header class="editor-header">
       <div class="header-left">
-        <button class="text-btn underline" @click="goHome">首页</button>
+        <button class="text-btn" @click="goHome">首页</button>
         <span class="separator">/</span>
-        <button class="text-btn underline" @click="goBack">返回作品</button>
+        <button class="text-btn" @click="goBack">返回作品</button>
         <span class="separator">|</span>
-        <input type="text" v-model="chapter.title" class="title-input" placeholder="请输入章节标题" />
+        <h1 class="current-title">{{ isCreateMode ? '新建章节' : (chapter.title || '无标题章节') }}</h1>
       </div>
       <div class="header-right">
         <div class="settings-trigger" @click="showSettings = !showSettings">
@@ -23,6 +23,12 @@
     </header>
 
     <main class="editor-main">
+      <input 
+        type="text" 
+        v-model="chapter.title" 
+        class="title-input-body" 
+        placeholder="请输入章节标题" 
+      />
       <textarea 
         v-model="chapter.content" 
         class="content-textarea" 
@@ -46,7 +52,14 @@
         <div class="panel-content">
           <div class="form-group">
             <label>价格 (点数)</label>
-            <input type="number" v-model="chapter.price" class="paper-input" />
+            <input 
+              type="number" 
+              v-model.number="chapter.price" 
+              class="paper-input" 
+              min="0"
+              @blur="validatePrice"
+            />
+            <p v-if="chapter.price === 0" class="price-tip">无法购买，仅可通过 VIP 获取</p>
           </div>
 
           <div class="form-group">
@@ -101,6 +114,12 @@ const VIP_LEVEL_OPTIONS = [
 
 const getVipLabel = (value: string) => {
   return VIP_LEVEL_OPTIONS.find(opt => opt.value === value)?.label || value
+}
+
+const validatePrice = () => {
+  if (typeof chapter.value.price !== 'number' || chapter.value.price < 0) {
+    chapter.value.price = 0
+  }
 }
 
 const fetchData = async () => {

@@ -100,3 +100,47 @@
 body {
   margin: 0;
 }
+
+/* Global Paper Theme Components */
+.text-btn {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: var(--font-serif);
+  font-size: var(--font-base);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none !important;
+  outline: none !important;
+  appearance: none;
+}
+
+.text-btn.underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.text-btn:hover {
+  color: var(--color-primary);
+}
+
+.text-btn:disabled, .text-btn.disabled {
+  color: var(--color-text-muted) !important;
+  cursor: not-allowed;
+  text-decoration: none !important;
+}
+
+.paper-input, .paper-textarea, .paper-select {
+  background: none !important;
+  border: none !important;
+  border-bottom: 1px dotted var(--color-border) !important;
+  font-family: var(--font-serif);
+  color: var(--color-text);
+  outline: none !important;
+}
+
+.paper-input:focus, .paper-textarea:focus {
+  border-bottom-style: solid !important;
+  border-color: var(--color-primary) !important;
+}

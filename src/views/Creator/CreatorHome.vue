@@ -3,7 +3,7 @@
     <div class="content-container">
       <header class="creator-header">
         <div class="header-left">
-          <button class="text-btn underline" @click="goHome">首页</button>
+          <button class="text-btn" @click="goHome">首页</button>
           <span class="separator">/</span>
           <h1 class="page-title">创作中心</h1>
         </div>
