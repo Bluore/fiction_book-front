@@ -17,7 +17,7 @@
           :disabled="saving" 
           @click="handleSave"
         >
-          {{ saving ? '保存中...' : '保存修改' }}
+          {{ saving ? (isCreateMode ? '创建中...' : '保存中...') : (isCreateMode ? '章节创建' : '保存修改') }}
         </button>
       </div>
     </header>
@@ -68,7 +68,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import { getChapterDetailApi } from '@/api/book'
-import { updateChapterApi } from '@/api/creator'
+import { createChapterApi, updateChapterApi } from '@/api/creator'
 import type { BookChapterResponse } from '@/api/book'
 
 const route = useRoute()
@@ -76,14 +76,15 @@ const router = useRouter()
 const message = useMessage()
 
 const bookId = route.params.id as string
-const chapterId = route.params.chapterId as string
+const chapterId = ref(route.params.chapterId as string)
+const isCreateMode = computed(() => chapterId.value === 'create')
 
 const chapter = ref<BookChapterResponse>({
-  chapter_id: chapterId,
+  chapter_id: chapterId.value,
   title: '',
   content: '',
   order: 0,
-  vip_level: 'free',
+  vip_level: '',
   price: 0
 })
 
@@ -103,10 +104,13 @@ const getVipLabel = (value: string) => {
 }
 
 const fetchData = async () => {
+  if (isCreateMode.value) return
+  
   try {
-    const res = await getChapterDetailApi(chapterId)
+    const res = await getChapterDetailApi(chapterId.value)
     if (res.data.code === 200) {
       chapter.value = res.data.data
+      chapter.value.vip_level = chapter.value.vip_level ?? ''
     }
   } catch (error) {
     message.error('获取章节失败')
@@ -133,18 +137,44 @@ const handleSave = async () => {
   
   saving.value = true
   try {
-    const res = await updateChapterApi(chapterId, {
-      id: chapterId,
-      title: chapter.value.title,
-      content: chapter.value.content || '',
-      price: chapter.value.price,
-      vip_level: chapter.value.vip_level
-    })
-    
-    if (res.data.code === 200) {
-      message.success('保存成功')
+    if (isCreateMode.value) {
+      // 创建模式
+      const res = await createChapterApi({
+        book_id: bookId,
+        title: chapter.value.title,
+        content: chapter.value.content || '',
+        price: Number(chapter.value.price) || 0,
+        vip_level: chapter.value.vip_level || ''
+      })
+      
+      if (res.data.code === 200) {
+        message.success('章节创建成功')
+        // 创建成功后切换到编辑模式
+        chapterId.value = res.data.data.chapter_id
+        chapter.value = res.data.data
+        // 更新路由参数但不刷新页面，保持在当前编辑状态
+        router.replace({ 
+          name: 'creator-chapter-editor', 
+          params: { id: bookId, chapterId: chapterId.value } 
+        })
+      } else {
+        message.error(res.data.message || '创建失败')
+      }
     } else {
-      message.error(res.data.message || '保存失败')
+      // 更新模式
+      const res = await updateChapterApi(chapterId.value, {
+        id: chapterId.value,
+        title: chapter.value.title,
+        content: chapter.value.content || '',
+        price: Number(chapter.value.price) || 0,
+        vip_level: chapter.value.vip_level || ''
+      })
+      
+      if (res.data.code === 200) {
+        message.success('保存成功')
+      } else {
+        message.error(res.data.message || '保存失败')
+      }
     }
   } catch (error) {
     console.error('保存章节失败:', error)

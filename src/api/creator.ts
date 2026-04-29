@@ -2,6 +2,14 @@ import request from './request'
 import type { ApiResponse } from './request'
 import type { BookResponse, BookChapterResponse, BookListResponse } from './book'
 
+export interface CreateChapterPayload {
+  book_id: string
+  content: string
+  price: number
+  title: string
+  vip_level: string
+}
+
 /**
  * 获取创作者自己的书籍列表
  */
@@ -59,8 +67,8 @@ export const deleteBookApi = (id: string) => {
 /**
  * 创建新章节
  */
-export const createChapterApi = (bookId: string, data: Partial<BookChapterResponse>) => {
-  return request.post<ApiResponse<BookChapterResponse>>(`/creator/books/${bookId}/chapters`, data)
+export const createChapterApi = (data: CreateChapterPayload) => {
+  return request.post<ApiResponse<BookChapterResponse>>('/chapters/create', data)
 }
 
 /**

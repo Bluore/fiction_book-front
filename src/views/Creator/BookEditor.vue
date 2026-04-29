@@ -156,7 +156,10 @@ const handleCoverSuccess = (url: string) => {
 }
 
 const handleAddChapter = () => {
-  message.info('添加章节功能开发中...')
+  router.push({
+    name: 'creator-chapter-editor',
+    params: { id: bookId, chapterId: 'create' }
+  })
 }
 
 const editChapter = (chapterId: string) => {
