@@ -31,14 +31,14 @@
   margin-top: 20px;
 }
 
-.section-header {
+.book-detail-page .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
 }
 
-.section-title {
+.book-detail-page .section-title {
   font-size: 1.5rem;
   font-weight: 500;
   margin: 0;

@@ -3,7 +3,7 @@
   overflow: hidden;
 }
 
-.section-header {
+.hot-recommend .section-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -12,13 +12,13 @@
   padding-bottom: 8px;
 }
 
-.title-group {
+.hot-recommend .title-group {
   display: flex;
   align-items: baseline;
   gap: 12px;
 }
 
-.section-title {
+.hot-recommend .section-title {
   font-size: var(--font-2xl);
   font-family: 'SimSun', serif;
   font-weight: var(--font-bold);

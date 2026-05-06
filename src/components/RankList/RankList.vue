@@ -96,7 +96,7 @@ const fetchBooks = async () => {
       sort_order: 'desc'
     });
     if (res.data.code === 200) {
-      books.value = res.data.data.books;
+      books.value = res.data.data?.books || [];
     }
   } catch (error) {
     console.error('Failed to fetch rank books:', error);

@@ -19,7 +19,9 @@
           <textarea v-model="user.description" class="paper-textarea" rows="4"></textarea>
         </div>
         <div class="form-actions">
-          <button class="primary-text-btn">保存修改</button>
+          <button class="primary-text-btn" @click="handleSave" :disabled="saving">
+            {{ saving ? '保存中...' : '保存修改' }}
+          </button>
         </div>
       </div>
     </section>
@@ -27,10 +29,58 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { mockUser } from '@/mocks/user';
+import { reactive, onMounted, ref } from 'vue';
+import { getUserInfoApi, updateUserInfoApi } from '@/api/auth';
+import { useMessage } from 'naive-ui';
 
-const user = reactive({ ...mockUser });
+const message = useMessage();
+const saving = ref(false);
+const user = reactive({
+  username: '',
+  email: '',
+  description: '',
+  age: 0
+});
+
+const fetchUserInfo = async () => {
+  try {
+    const res = await getUserInfoApi();
+    if (res.data.code === 200) {
+      const data = res.data.data;
+      user.username = data.username || '';
+      user.email = data.email || '';
+      user.description = data.description || '';
+      user.age = data.age || 0;
+    }
+  } catch (error: any) {
+    message.error(error.message || '获取用户信息失败');
+  }
+};
+
+const handleSave = async () => {
+  try {
+    saving.value = true;
+    const res = await updateUserInfoApi({
+      username: user.username,
+      description: user.description,
+      age: user.age
+    });
+    
+    if (res.data.code === 200) {
+      message.success('保存成功');
+    } else {
+      message.error(res.data.message || '保存失败');
+    }
+  } catch (error: any) {
+    message.error(error.message || '保存失败，请稍后重试');
+  } finally {
+    saving.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchUserInfo();
+});
 </script>
 
 <style scoped>

@@ -91,6 +91,27 @@ export const getChapterInfoApi = (id: string) => {
 }
 
 /**
+ * 获取阅读历史列表
+ */
+export const getReadingHistoryApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/history/list', { params })
+}
+
+/**
+ * 添加到书架
+ */
+export const addToBookshelfApi = (book_id: string) => {
+    return request.post<ApiResponse<any>>('/bookshelf/add', { book_id })
+}
+
+/**
+ * 获取用户书架列表 (认证)
+ */
+export const getBookshelfApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/bookshelf/list', { params })
+}
+
+/**
  * 购买章节
  */
 export const buyChapterApi = (data: BuyChapterRequest) => {

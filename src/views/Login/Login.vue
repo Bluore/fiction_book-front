@@ -39,7 +39,7 @@
           <div class="auth-form">
             <div class="form-item">
               <label class="form-label">用户名</label>
-              <n-input v-model:value="registerForm.username" placeholder="建议使用雅号" size="large" />
+              <n-input v-model:value="registerForm.username" placeholder="请输入用户名" size="large" />
             </div>
             <div class="form-item">
               <label class="form-label">电子邮驿</label>

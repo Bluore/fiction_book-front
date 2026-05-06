@@ -65,6 +65,11 @@ const userOptions = [
     icon: renderIcon(PersonOutline)
   },
   {
+    label: '创作中心',
+    key: 'creator',
+    icon: renderIcon(PersonOutline) // Using PersonOutline for now, can change if needed
+  },
+  {
     label: '退出登录',
     key: 'logout',
     icon: renderIcon(LogOutOutline)
@@ -78,6 +83,8 @@ const handleSelect = (key: string) => {
     router.push('/login')
   } else if (key === 'space') {
     router.push('/space')
+  } else if (key === 'creator') {
+    router.push('/creator')
   }
 }
 
