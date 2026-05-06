@@ -35,7 +35,7 @@ const fetchRecentBooks = async () => {
   try {
     loading.value = true;
     const res = await getReadingHistoryApi({ page: 1, size: 8 });
-    recentBooks.value = res.data.data.books;
+    recentBooks.value = res.data.data?.books || [];
   } catch (error) {
     console.error('Failed to fetch recent books:', error);
   } finally {

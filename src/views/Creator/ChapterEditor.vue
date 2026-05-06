@@ -169,8 +169,10 @@ const handleSave = async () => {
       if (res.data.code === 200) {
         message.success('章节创建成功')
         // 创建成功后切换到编辑模式
-        chapterId.value = res.data.data.chapter_id
-        chapter.value = res.data.data
+        chapterId.value = res.data.data?.chapter_id || ''
+        if (res.data.data) {
+          chapter.value = res.data.data
+        }
         // 更新路由参数但不刷新页面，保持在当前编辑状态
         router.replace({ 
           name: 'creator-chapter-editor', 

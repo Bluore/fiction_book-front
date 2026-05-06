@@ -37,7 +37,7 @@ const fetchBookshelf = async () => {
   try {
     loading.value = true;
     const res = await getBookshelfApi();
-    allBooks.value = res.data.data.books;
+    allBooks.value = res.data.data?.books || [];
   } catch (error) {
     console.error('Failed to fetch bookshelf:', error);
   } finally {

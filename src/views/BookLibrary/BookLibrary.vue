@@ -129,8 +129,8 @@ const fetchBooks = async () => {
       ...queryParams
     });
     if (res.data.code === 200 || res.data.code === 0) {
-      books.value = res.data.data.books;
-      total.value = res.data.data.count;
+      books.value = res.data.data?.books || [];
+      total.value = res.data.data?.count || 0;
     }
   } catch (error) {
     console.error('Failed to fetch books:', error);

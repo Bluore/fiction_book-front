@@ -222,7 +222,7 @@ const fetchAllChapters = async () => {
   try {
     const res = await getBookChaptersApi(bookId.value);
     if (res.data.code === 200) {
-      allChapters.value = res.data.data.Chapters || [];
+      allChapters.value = res.data.data?.Chapters || [];
     }
   } catch (err) {
     console.error('Fetch all chapters error:', err);

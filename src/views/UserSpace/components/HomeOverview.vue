@@ -82,7 +82,7 @@ const fetchRecentBooks = async () => {
   try {
     loading.value = true;
     const res = await getReadingHistoryApi({ page: 1, size: 3 });
-    recentBooks.value = res.data.data.books;
+    recentBooks.value = res.data.data?.books || [];
   } catch (error) {
     console.error('Failed to fetch recent books:', error);
   } finally {
@@ -94,7 +94,7 @@ const fetchBookshelfBooks = async () => {
   try {
     bookshelfLoading.value = true;
     const res = await getBookshelfApi({ page: 1, size: 3 });
-    bookshelfBooks.value = res.data.data.books;
+    bookshelfBooks.value = res.data.data?.books || [];
   } catch (error) {
     console.error('Failed to fetch bookshelf books:', error);
   } finally {

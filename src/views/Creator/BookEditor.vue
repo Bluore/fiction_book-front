@@ -123,11 +123,11 @@ const fetchData = async () => {
     ])
     
     if (bookRes.data.code === 200) {
-      book.value = bookRes.data.data
+      book.value = bookRes.data.data || null
     }
     
     if (chaptersRes.data.code === 200) {
-      chapters.value = chaptersRes.data.data.Chapters
+      chapters.value = chaptersRes.data.data?.Chapters || []
     }
   } catch (error) {
     message.error('获取数据失败')
@@ -153,7 +153,9 @@ const handleSaveBook = async () => {
     })
     if (res.data.code === 200) {
       message.success('基本信息保存成功')
-      book.value = res.data.data
+      if (res.data.data) {
+        book.value = res.data.data
+      }
     } else {
       message.error(res.data.message || '保存失败')
     }

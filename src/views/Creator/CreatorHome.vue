@@ -74,8 +74,8 @@ const fetchBooks = async () => {
       size: pagination.value.size
     })
     if (res.data.code === 200) {
-      books.value = res.data.data.books
-      pagination.value.count = res.data.data.count
+      books.value = res.data.data?.books || []
+      pagination.value.count = res.data.data?.count || 0
     } else {
       // Fallback to mock data for current user
       books.value = mockBooks.filter(b => b.owner_id === 'current-user-id') as any
