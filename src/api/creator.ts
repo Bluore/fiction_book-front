@@ -27,8 +27,12 @@ export const createBookApi = (data: { name: string; description: string; price: 
 /**
  * 更新书籍信息
  */
-export const updateBookApi = (id: string, data: Partial<BookResponse>) => {
-  return request.put<ApiResponse<BookResponse>>(`/creator/books/${id}`, data)
+export const updateBookApi = (id: string, data: {
+  description: string;
+  name: string;
+  price: number;
+}) => {
+  return request.put<ApiResponse<BookResponse>>(`/books/${id}/info`, data)
 }
 
 /**

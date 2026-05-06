@@ -26,11 +26,22 @@
             </div>
 
             <div class="form-group">
+              <label>作品价格</label>
+              <input type="number" v-model.number="book.price" class="paper-input" min="0" />
+            </div>
+
+            <div class="form-group">
               <label>作品简介</label>
               <textarea v-model="book.description" class="paper-textarea" rows="6"></textarea>
             </div>
 
-            <button class="text-btn underline save-btn" @click="handleSaveBook">保存基本信息</button>
+            <button 
+              class="text-btn underline save-btn" 
+              :disabled="savingInfo" 
+              @click="handleSaveBook"
+            >
+              {{ savingInfo ? '保存中...' : '保存基本信息' }}
+            </button>
           </div>
         </aside>
 
@@ -90,6 +101,7 @@ const bookId = route.params.id as string
 const book = ref<BookResponse | null>(null)
 const chapters = ref<BookChapterResponse[]>([])
 const uploaderRef = ref<any>(null)
+const savingInfo = ref(false)
 
 // VIP 等级映射关系
 const VIP_LEVEL_MAP: Record<string, string> = {
@@ -132,18 +144,24 @@ const goHome = () => {
 
 const handleSaveBook = async () => {
   if (!book.value) return
+  savingInfo.value = true
   try {
     const res = await updateBookApi(bookId, {
       name: book.value.name,
-      description: book.value.description
+      description: book.value.description,
+      price: book.value.price
     })
     if (res.data.code === 200) {
-      message.success('保存成功')
+      message.success('基本信息保存成功')
+      book.value = res.data.data
     } else {
       message.error(res.data.message || '保存失败')
     }
-  } catch (error) {
-    message.error('保存失败')
+  } catch (error: any) {
+    console.error('保存书籍信息失败:', error)
+    message.error(error.message || '保存失败')
+  } finally {
+    savingInfo.value = false
   }
 }
 

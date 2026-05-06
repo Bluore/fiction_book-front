@@ -112,7 +112,6 @@ definitions:
         description: OwnerId     string    `json:"owner_id"`
         type: string
     required:
-    - cover_image
     - description
     - name
     type: object
@@ -171,6 +170,20 @@ definitions:
     properties:
       email:
         type: string
+    type: object
+  dto.ForgetPasswordRequest:
+    properties:
+      email:
+        type: string
+      email_verify:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - email_verify
+    - password
     type: object
   dto.GetOrderListResponse:
     properties:
@@ -270,10 +283,27 @@ definitions:
         type: string
       id:
         type: string
+      price:
+        type: integer
       title:
+        type: string
+      vip_level:
         type: string
     required:
     - id
+    type: object
+  dto.UpdateBookRequest:
+    properties:
+      bookID:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+    required:
+    - bookID
     type: object
   dto.UpdateUserEmailRequest:
     properties:
@@ -487,6 +517,53 @@ paths:
       summary: 获取邮箱验证码
       tags:
       - 认证
+  /api/v1/auth/forget/password:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户密码（需要认证新的邮箱）
+      parameters:
+      - description: 更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ForgetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4002":
+          description: 用户未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4003":
+          description: 验证码验证失败
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4004":
+          description: 验证码未发送
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 忘记密码
+      tags:
+      - 认证
   /api/v1/auth/login:
     post:
       consumes:
@@ -661,6 +738,55 @@ paths:
       summary: 上传书籍封面（验证）
       tags:
       - 书籍管理
+  /api/v1/books/{id}/info:
+    put:
+      consumes:
+      - application/json
+      description: 更新用户书籍的请求，支持更新名称、价格、描述
+      parameters:
+      - description: 书籍ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateBookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BookResponse'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: 用户登录失效
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4008":
+          description: 书籍名称已存在
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4020":
+          description: 你没有该书籍的所有权
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: 更新书籍信息请求
+      tags:
+      - 书籍管理
   /api/v1/books/create:
     post:
       consumes:
@@ -701,6 +827,8 @@ paths:
           description: 书籍已存在
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
       summary: 创建书籍
       tags:
       - 书籍管理
@@ -873,6 +1001,40 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: 获取每日热度榜单
+      tags:
+      - 书籍管理
+  /api/v1/books/thermal/weekly:
+    get:
+      consumes:
+      - application/json
+      description: 榜单每5分钟刷新，缓存优化，获取今天到前6天的排行总汇
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UploadBookCoverResponse'
+        "400":
+          description: 请求参数错误
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取每周热度榜单
       tags:
       - 书籍管理
   /api/v1/bookshelf/{user_id}:
@@ -1057,7 +1219,7 @@ paths:
         name: id
         required: true
         type: string
-      - description: 更新信息
+      - description: 购买书籍请求
         in: body
         name: request
         required: true
@@ -1219,6 +1381,10 @@ paths:
           description: 章节未找到
           schema:
             $ref: '#/definitions/response.Response'
+        "4020":
+          description: 你没有权限操作
+          schema:
+            $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
       summary: 删除章节 (认证)
@@ -1320,6 +1486,10 @@ paths:
             $ref: '#/definitions/response.Response'
         "4010":
           description: 章节未找到
+          schema:
+            $ref: '#/definitions/response.Response'
+        "4020":
+          description: 你没有编辑权限
           schema:
             $ref: '#/definitions/response.Response'
       security:
