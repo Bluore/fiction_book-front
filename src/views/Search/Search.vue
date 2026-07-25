@@ -86,20 +86,12 @@
           <!-- 章节列表 -->
           <template v-else>
             <div class="chapter-list">
-              <div 
-                class="chapter-item" 
-                v-for="item in chapterList" 
+              <BookChapterSearchListItem
+                v-for="item in chapterList"
                 :key="item.book_chapter.chapter_id"
-                @click="goToChapter(item.book_chapter)"
-              >
-                <h3 class="chapter-title" v-html="item.highlight?.title || item.book_chapter.title"></h3>
-                <p class="chapter-desc" v-html="item.highlight?.content || item.book_chapter.content"></p>
-                <div class="chapter-meta">
-                  <span>所属书籍: {{ item.book_chapter.Book?.name || '未知' }}</span>
-                  <span v-if="item.book_chapter.vip_level" class="vip-tag">{{ item.book_chapter.vip_level.toUpperCase() }}</span>
-                  <span v-if="item.book_chapter.price">价格: ￥{{ (item.book_chapter.price / 100).toFixed(2) }}</span>
-                </div>
-              </div>
+                :chapter="item.book_chapter"
+                :highlight="item.highlight"
+              />
             </div>
           </template>
 
@@ -123,8 +115,8 @@ import Header from '@/components/Header/Header.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
 import BookSearchListItem from '@/components/BookSearchListItem/BookSearchListItem.vue'
+import BookChapterSearchListItem from '@/components/BookChapterSearchListItem/BookChapterSearchListItem.vue'
 import { searchBooksApi, searchChaptersApi, type SearchParams, type BookSearchItem, type ChapterSearchItem } from '@/api/search'
-import type { BookChapterResponse } from '@/api/book'
 import './Search.css'
 
 const route = useRoute()
@@ -290,11 +282,7 @@ const loadData = async () => {
   }
 }
 
-const goToChapter = (chapter: BookChapterResponse) => {
-  if (chapter.Book?.id) {
-    router.push({ name: 'reading', params: { id: chapter.Book.id, chapterId: chapter.chapter_id } })
-  }
-}
+
 
 watch(() => route.query.q, (newQ) => {
   if (newQ !== undefined && newQ !== searchQuery.value) {
