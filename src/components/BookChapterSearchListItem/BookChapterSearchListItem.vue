@@ -1,6 +1,6 @@
 <template>
   <div class="book-chapter-search-list-item" @click="handleNavigate">
-    <div class="book-cover-wrapper" v-if="chapter.Book">
+    <div class="book-chapter-search-list-item__cover-wrapper" v-if="chapter.Book">
       <img
         v-show="isLoaded"
         :src="chapter.Book.cover_image"

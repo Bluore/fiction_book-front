@@ -11,7 +11,7 @@
   transform: translateX(4px);
 }
 
-.book-cover-wrapper {
+.book-card .book-cover-wrapper {
   position: relative;
   flex: 0 0 100px;
   aspect-ratio: 3 / 4;
