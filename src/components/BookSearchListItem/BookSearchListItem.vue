@@ -17,8 +17,8 @@
       <div v-if="book.vip_level" class="vip-tag">{{ book.vip_level.toUpperCase() }}</div>
     </div>
     <div class="book-info">
-      <h3 class="book-title">{{ book.name }}</h3>
-      <p class="book-description">{{ book.description }}</p>
+      <h3 class="book-title" v-html="props.highlight?.name || book.name"></h3>
+      <p class="book-description" v-html="props.highlight?.description || book.description"></p>
       <div class="book-meta">
         <span class="book-price" v-if="book.price">￥{{ (book.price / 100).toFixed(2) }}</span>
         <span class="book-stats">
@@ -41,6 +41,10 @@ import './BookSearchListItem.css';
 const router = useRouter();
 const props = defineProps<{
   book: BookMetadata;
+  highlight?: {
+    name?: string;
+    description?: string;
+  };
 }>();
 
 const isLoaded = ref(false);

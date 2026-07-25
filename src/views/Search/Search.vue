@@ -78,6 +78,7 @@
                 v-for="item in bookList" 
                 :key="item.book.id" 
                 :book="item.book" 
+                :highlight="item.highlight"
               />
             </div>
           </template>

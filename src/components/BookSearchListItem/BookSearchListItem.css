@@ -98,3 +98,9 @@
   margin-right: 5px;
   color: #999;
 }
+
+/* 高亮样式 */
+.book-search-list-item em {
+  color: red;
+  font-style: normal;
+}
