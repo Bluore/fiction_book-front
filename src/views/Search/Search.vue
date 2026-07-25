@@ -1,5 +1,5 @@
 <template>
-  <div class="search-view">
+  <div class="search-view__">
     <Header />
     <div class="page-warp">
       <div class="page">
