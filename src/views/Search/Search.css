@@ -73,6 +73,13 @@
 }
 
 /* 书籍列表 */
+.book-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 书籍列表 */
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

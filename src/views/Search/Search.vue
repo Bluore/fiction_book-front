@@ -73,12 +73,11 @@
         <div class="results-container">
           <!-- 书籍列表 -->
           <template v-if="filters.target === 'book'">
-            <div class="book-grid">
-              <BookCard 
+            <div class="book-list-container">
+              <BookSearchListItem 
                 v-for="item in bookList" 
                 :key="item.book.id" 
                 :book="item.book" 
-                :show-description="true" 
               />
             </div>
           </template>
@@ -122,7 +121,7 @@ import { useRoute, useRouter } from 'vue-router'
 import Header from '@/components/Header/Header.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
-import BookCard from '@/components/BookCard/BookCard.vue'
+import BookSearchListItem from '@/components/BookSearchListItem/BookSearchListItem.vue'
 import { searchBooksApi, searchChaptersApi, type SearchParams, type BookSearchItem, type ChapterSearchItem } from '@/api/search'
 import type { BookChapterResponse } from '@/api/book'
 import './Search.css'
