@@ -211,16 +211,16 @@ const buildParams = (): SearchParams => {
     else if (filters.price === '1001-') { min = 1001 }
     
     if (filters.target === 'book') {
-      params.price_min = min; params.price_max = max
+      params.price_start = min; params.price_end = max
     } else {
       params.price_start = min; params.price_end = max
     }
   }
   
   if (filters.target === 'book' && filters.hotness !== 'all') {
-    if (filters.hotness === '0-100') { params.hot_min = 0; params.hot_max = 100 }
-    else if (filters.hotness === '101-1000') { params.hot_min = 101; params.hot_max = 1000 }
-    else if (filters.hotness === '1001-') { params.hot_min = 1001 }
+    if (filters.hotness === '0-100') { params.thermal_value_start = 0; params.thermal_value_end = 100 }
+    else if (filters.hotness === '101-1000') { params.thermal_value_start = 101; params.thermal_value_end = 1000 }
+    else if (filters.hotness === '1001-') { params.thermal_value_start = 1001 }
   }
   
   const pTime = parseTime(filters.publish_time)
