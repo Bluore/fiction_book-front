@@ -125,3 +125,10 @@ export const getMonthlyThermalApi = (params?: { page?: number; size?: number }) 
     return request.get<ApiResponse<BookListResponse>>('/books/thermal/monthly', { params })
 }
 
+/**
+ * 获取每日热度榜单
+ */
+export const getDailyThermalApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/thermal/daily', { params })
+}
+
