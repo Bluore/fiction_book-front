@@ -117,3 +117,11 @@ export const getBookshelfApi = (params?: { page?: number; size?: number }) => {
 export const buyChapterApi = (data: BuyChapterRequest) => {
     return request.post<ApiResponse<string>>('/buy/chapter', data)
 }
+
+/**
+ * 获取每月热度榜单
+ */
+export const getMonthlyThermalApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/thermal/monthly', { params })
+}
+

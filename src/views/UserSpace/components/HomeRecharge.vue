@@ -54,7 +54,7 @@
           <ul class="vip-benefits">
             <li v-for="benefit in plan.benefits" :key="benefit">{{ benefit }}</li>
           </ul>
-          <button class="text-btn">立即购买</button>
+          <button class="text-btn">{{ plan.actionText }}</button>
         </div>
       </div>
     </section>
@@ -62,32 +62,66 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { userInfo } from '@/utils/auth';
 
 const presetAmounts = [600, 1000, 5000, 100000];
 const selectedAmount = ref<number | 'custom'>(600);
 const customAmount = ref<number | null>(null);
 
-const vipPlans = [
-  {
-    id: 'month',
-    name: '月度会员',
-    price: 3000,
-    benefits: ['全站免费阅读', '专属标识', '双倍经验']
-  },
-  {
-    id: 'quarter',
-    name: '季度会员',
-    price: 8000,
-    benefits: ['全站免费阅读', '专属标识', '三倍经验', '每月礼包']
-  },
-  {
-    id: 'year',
-    name: '年度会员',
-    price: 28000,
-    benefits: ['全站免费阅读', '专属标识', '五倍经验', '专属客服', '节日豪礼']
+const vipPlans = computed(() => {
+  const vipMark = userInfo.value?.vip_mark || 'vip_0';
+  
+  const basePlans = [
+    {
+      id: 'month_regular',
+      type: 'regular',
+      name: '月度会员',
+      price: 3000,
+      benefits: ['全站免费阅读', '专属标识', '双倍经验']
+    },
+    {
+      id: 'year_regular',
+      type: 'regular',
+      name: '年度会员',
+      price: 28000,
+      benefits: ['全站免费阅读', '专属标识', '三倍经验', '每月礼包']
+    },
+    {
+      id: 'month_super',
+      type: 'super',
+      name: '月度超级会员',
+      price: 8000,
+      benefits: ['全站免费阅读', '超级专属标识', '五倍经验', '专属客服']
+    },
+    {
+      id: 'year_super',
+      type: 'super',
+      name: '年度超级会员',
+      price: 88000,
+      benefits: ['全站免费阅读', '超级专属标识', '十倍经验', '专属客服', '节日豪礼']
+    }
+  ];
+
+  if (vipMark === 'vip_2') {
+    // 超级会员用户
+    return basePlans
+      .filter(plan => plan.type === 'super')
+      .map(plan => ({ ...plan, actionText: `续费${plan.name}` }));
+  } else if (vipMark === 'vip_1') {
+    // 普通会员用户
+    return basePlans.map(plan => {
+      if (plan.type === 'regular') {
+        return { ...plan, actionText: `续费${plan.name}` };
+      } else {
+        return { ...plan, actionText: '升级为超级会员' };
+      }
+    });
+  } else {
+    // 普通用户
+    return basePlans.map(plan => ({ ...plan, actionText: `购买${plan.name}` }));
   }
-];
+});
 </script>
 
 <style scoped>
