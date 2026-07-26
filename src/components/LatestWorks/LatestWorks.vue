@@ -2,7 +2,7 @@
   <section class="latest-works">
     <div class="section-header">
       <h2 class="section-title">最新力作</h2>
-      <button class="more-btn">查看更多</button>
+      <button class="more-btn" @click="goToRank">查看更多</button>
     </div>
     <n-spin :show="isLoading" style="min-height: 150px">
       <div class="latest-list" v-if="books.length > 0">
@@ -34,6 +34,10 @@ import './LatestWorks.css';
 const router = useRouter();
 const books = ref<BookResponse[]>([]);
 const isLoading = ref(false);
+
+const goToRank = () => {
+  router.push('/rank');
+};
 
 const formatTime = (timeStr?: string | number) => {
   if (!timeStr) return '-';

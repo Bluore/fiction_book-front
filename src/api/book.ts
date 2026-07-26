@@ -132,3 +132,10 @@ export const getDailyThermalApi = (params?: { page?: number; size?: number }) =>
     return request.get<ApiResponse<BookListResponse>>('/books/thermal/daily', { params })
 }
 
+/**
+ * 获取每周热度榜单
+ */
+export const getWeeklyThermalApi = (params?: { page?: number; size?: number }) => {
+    return request.get<ApiResponse<BookListResponse>>('/books/thermal/weekly', { params })
+}
+

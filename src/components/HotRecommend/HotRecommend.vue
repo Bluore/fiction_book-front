@@ -16,7 +16,7 @@
             <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
           </svg>
         </button>
-        <button class="more-btn">查看更多</button>
+        <button class="more-btn" @click="goToRank">查看更多</button>
       </div>
     </div>
     <div class="carousel-container">
@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import BookCard from '../BookCard/BookCard.vue';
 import { getMonthlyThermalApi } from '../../api/book';
 import type { BookResponse } from '../../api/book';
@@ -62,6 +63,11 @@ import './HotRecommend.css';
 const currentPage = ref(0);
 const books = ref<BookResponse[]>([]);
 const isLoading = ref(false);
+const router = useRouter();
+
+const goToRank = () => {
+  router.push('/rank');
+};
 
 const totalPages = computed(() => Math.max(1, Math.ceil(books.value.length / 9)));
 

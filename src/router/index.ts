@@ -44,6 +44,11 @@ const router = createRouter({
             component: () => import('@/views/Search/Search.vue')
         },
         {
+            path: '/rank',
+            name: 'rank',
+            component: () => import('@/views/Rank/Rank.vue')
+        },
+        {
             path: '/creator',
             name: 'creator',
             component: () => import('@/views/Creator/CreatorHome.vue')

@@ -9,7 +9,7 @@
       <!-- 导航栏 -->
       <nav class="nav-list">
         <router-link to="/" class="nav-item" active-class="active">首页</router-link>
-        <div class="nav-item">排行榜</div>
+        <router-link to="/rank" class="nav-item" active-class="active">排行榜</router-link>
         <div class="nav-item">我的书架</div>
       </nav>
 

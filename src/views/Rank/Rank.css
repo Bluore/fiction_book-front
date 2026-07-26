@@ -1,0 +1,221 @@
+.rank-page {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-warp__ .rank-container {
+  display: flex;
+  gap: 30px;
+  padding: 30px 0;
+  align-items: flex-start;
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+.page-warp__ .rank-sidebar {
+  width: 240px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 0;
+  flex-shrink: 0;
+}
+
+.page-warp__ .sidebar-title {
+  font-size: var(--font-xl);
+  color: var(--color-text);
+  padding: 0 20px 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-serif);
+}
+
+.page-warp__ .rank-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page-warp__ .nav-item {
+  padding: 15px 30px;
+  font-size: var(--font-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.page-warp__ .nav-item:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.page-warp__ .nav-item.active {
+  color: var(--color-primary);
+  font-weight: var(--font-bold);
+  background-color: var(--color-primary-light);
+}
+
+.page-warp__ .nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--color-primary);
+}
+
+.page-warp__ .rank-main {
+  flex-grow: 1;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 30px;
+}
+
+.page-warp__ .rank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.page-warp__ .rank-header h2 {
+  font-size: var(--font-2xl);
+  color: var(--color-primary);
+  margin: 0;
+  font-family: var(--font-serif);
+}
+
+.page-warp__ .rank-desc {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+}
+
+.page-warp__ .rank-list-wrapper {
+  min-height: 400px;
+}
+
+.page-warp__ .rank-list-item {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px dashed var(--color-border-light);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.page-warp__ .rank-list-item:hover {
+  background-color: var(--color-bg);
+}
+
+.page-warp__ .rank-list-item:last-child {
+  border-bottom: none;
+}
+
+.page-warp__ .rank-number {
+  font-size: 24px;
+  font-weight: bold;
+  font-style: italic;
+  width: 50px;
+  text-align: center;
+  flex-shrink: 0;
+  margin-right: 10px;
+  color: var(--color-text-muted);
+}
+
+.page-warp__ .rank-top1 {
+  color: #e54d42;
+  font-size: 32px;
+}
+
+.page-warp__ .rank-top2 {
+  color: #f37b1d;
+  font-size: 28px;
+}
+
+.page-warp__ .rank-top3 {
+  color: #fbbd08;
+  font-size: 26px;
+}
+
+.page-warp__ .book-cover-wrapper {
+  width: 90px;
+  height: 120px;
+  flex-shrink: 0;
+  margin-right: 20px;
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  background-color: var(--color-border-light);
+}
+
+.page-warp__ .book-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.page-warp__ .vip-tag {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: var(--color-accent);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.page-warp__ .book-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page-warp__ .book-title {
+  font-size: var(--font-lg);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  margin: 0 0 10px 0;
+}
+
+.page-warp__ .book-description {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-normal);
+  margin: 0 0 15px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-warp__ .book-meta {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+.page-warp__ .book-author {
+  margin-right: 20px;
+}
+
+.page-warp__ .book-stats {
+  display: flex;
+  align-items: center;
+}
+
+.page-warp__ .icon-eye {
+  margin-right: 5px;
+}
