@@ -5,7 +5,7 @@
     <div class="page-warp">
       <div class="page">
         <!-- 搜索栏 -->
-        <SearchBar />
+        <SearchBar v-model="searchQuery" @search="handleSearch" />
 
         <!-- 首页轮番图 -->
         <Carouse />
@@ -30,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Header from '@/components/Header/Header.vue'
 import Carouse from '@/components/Carouse/Carouse.vue'
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
@@ -38,4 +40,15 @@ import RankList from '@/components/RankList/RankList.vue'
 import LatestWorks from '@/components/LatestWorks/LatestWorks.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import './Home.css'
+
+const router = useRouter()
+const searchQuery = ref('')
+
+const handleSearch = () => {
+  if (searchQuery.value) {
+    router.push({ name: 'search', query: { q: searchQuery.value } })
+  } else {
+    router.push({ name: 'search' })
+  }
+}
 </script>

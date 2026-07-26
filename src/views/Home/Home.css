@@ -19,7 +19,7 @@
 .page {
   width: 100%;
   max-width: var(--page-width);
-  padding: 0 20px;
+  padding: 0 60px;
 }
 
 /* 轮播图外边距 */

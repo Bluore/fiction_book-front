@@ -191,9 +191,6 @@ const editChapter = (chapterId: string) => {
   })
 }
 
-const handleReservedDelete = () => {
-  message.info('该功能目前不提供')
-}
 
 onMounted(() => {
   fetchData()

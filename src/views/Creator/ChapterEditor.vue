@@ -112,9 +112,6 @@ const VIP_LEVEL_OPTIONS = [
   { label: 'SVIP', value: 'vip_2' }
 ]
 
-const getVipLabel = (value: string) => {
-  return VIP_LEVEL_OPTIONS.find(opt => opt.value === value)?.label || value
-}
 
 const validatePrice = () => {
   if (typeof chapter.value.price !== 'number' || chapter.value.price < 0) {
