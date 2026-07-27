@@ -46,6 +46,16 @@
       @confirm="handlePaymentConfirm"
     />
 
+    <!-- Polling Status Display -->
+    <div v-if="isPolling" class="polling-overlay">
+      <div class="polling-content">
+        <h3>正在等待支付结果...</h3>
+        <p>{{ pollingMessage }}</p>
+        <p>订单ID: {{ currentOrderId }}</p>
+        <p>请在新打开的页面完成支付。</p>
+      </div>
+    </div>
+
     <!-- VIP 购买 -->
     <section class="paper-section">
       <div class="section-header">
@@ -70,10 +80,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { userInfo } from '@/utils/auth';
 import PaymentDialog from '@/components/PaymentDialog.vue';
-import { createGoldOrder } from '@/api/order';
+import { createGoldOrder, getOrder } from '@/api/order';
 
 const presetAmounts = [600, 1000, 5000, 100000];
 const selectedAmount = ref<number | 'custom'>(600);
@@ -82,6 +92,15 @@ const customAmount = ref<number | null>(null);
 const showPaymentDialog = ref(false);
 const dialogRewardGold = ref(0);
 const dialogPrice = ref(0);
+
+// Polling related states
+const isPolling = ref(false);
+const pollingMessage = ref('正在查询订单状态...');
+const currentOrderId = ref<string | null>(null);
+let pollingIntervalId: number | null = null;
+let pollingTimeoutId: number | null = null;
+const POLLING_INTERVAL = 3000; // Poll every 3 seconds
+const POLLING_TIMEOUT = 120 * 1000; // Stop polling after 2 minutes
 
 const handleRechargeClick = () => {
   let rewardGold = 0;
@@ -102,6 +121,58 @@ const handleRechargeClick = () => {
   showPaymentDialog.value = true;
 };
 
+const startPolling = (orderId: string) => {
+  currentOrderId.value = orderId;
+  isPolling.value = true;
+  pollingMessage.value = '正在查询订单状态...';
+
+  pollingIntervalId = setInterval(async () => {
+    try {
+      const response = await getOrder(orderId);
+      if (response.data.code === 200) {
+        const status = response.data.data.status;
+        if (status !== 1) { // 1 is pending payment
+          stopPolling();
+          if (status === 3) {
+            alert('支付成功！');
+            // Optionally, refresh user info or G-coin balance
+          } else if (status === -1) {
+            alert('订单已被取消。');
+          } else if (status === -2) {
+            alert('订单超时未支付。');
+          } else {
+            alert(`订单状态: ${status}`);
+          }
+        } else {
+          pollingMessage.value = '订单待支付，请在新页面完成支付...';
+        }
+      } else {
+        pollingMessage.value = `查询订单失败: ${response.data.message}`;
+      }
+    } catch (error: any) {
+      pollingMessage.value = `查询订单失败: ${error.message || '未知错误'}`;
+    }
+  }, POLLING_INTERVAL);
+
+  pollingTimeoutId = setTimeout(() => {
+    stopPolling();
+    alert('长时间未支付，订单查询已停止。');
+  }, POLLING_TIMEOUT);
+};
+
+const stopPolling = () => {
+  if (pollingIntervalId) {
+    clearInterval(pollingIntervalId);
+    pollingIntervalId = null;
+  }
+  if (pollingTimeoutId) {
+    clearTimeout(pollingTimeoutId);
+    pollingTimeoutId = null;
+  }
+  isPolling.value = false;
+  currentOrderId.value = null;
+};
+
 const handlePaymentConfirm = async () => {
   try {
     const response = await createGoldOrder({
@@ -109,8 +180,11 @@ const handlePaymentConfirm = async () => {
       reward_gold: dialogRewardGold.value,
     });
     if (response.data.code === 200) {
-      window.open(response.data.data.pay_url, '_blank');
+      const payUrl = response.data.data.pay_url;
+      const orderId = response.data.data.order_id;
+      window.open(payUrl, '_blank');
       alert('订单创建成功，请在新页面完成支付。');
+      startPolling(orderId);
     } else {
       alert(`订单创建失败: ${response.data.message}`);
     }
@@ -123,6 +197,10 @@ const handlePaymentConfirm = async () => {
 const handlePaymentCancel = () => {
   showPaymentDialog.value = false;
 };
+
+onUnmounted(() => {
+  stopPolling();
+});
 
 const vipPlans = computed(() => {
   const vipMark = userInfo.value?.vip_mark || 'vip_0';
@@ -327,5 +405,42 @@ const vipPlans = computed(() => {
   text-decoration: underline;
   text-underline-offset: 4px;
   font-weight: 500;
+}
+
+.polling-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.polling-content {
+  background: var(--color-surface);
+  padding: 30px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.polling-content h3 {
+  font-size: var(--font-xl);
+  margin-bottom: 15px;
+}
+
+.polling-content p {
+  margin-bottom: 10px;
+}
+
+.polling-content p:last-child {
+  margin-bottom: 0;
 }
 </style>
