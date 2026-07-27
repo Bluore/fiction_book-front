@@ -34,9 +34,17 @@
         </div>
       </div>
       <div class="recharge-footer">
-        <button class="primary-text-btn">立即充值</button>
+        <button class="primary-text-btn" @click="handleRechargeClick">立即充值</button>
       </div>
     </section>
+
+    <PaymentDialog
+      :show="showPaymentDialog"
+      :reward-gold="dialogRewardGold"
+      :price="dialogPrice"
+      @cancel="handlePaymentCancel"
+      @confirm="handlePaymentConfirm"
+    />
 
     <!-- VIP 购买 -->
     <section class="paper-section">
@@ -64,10 +72,57 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { userInfo } from '@/utils/auth';
+import PaymentDialog from '@/components/PaymentDialog.vue';
+import { createGoldOrder } from '@/api/order';
 
 const presetAmounts = [600, 1000, 5000, 100000];
 const selectedAmount = ref<number | 'custom'>(600);
 const customAmount = ref<number | null>(null);
+
+const showPaymentDialog = ref(false);
+const dialogRewardGold = ref(0);
+const dialogPrice = ref(0);
+
+const handleRechargeClick = () => {
+  let rewardGold = 0;
+  if (selectedAmount.value === 'custom') {
+    rewardGold = customAmount.value || 0;
+  } else {
+    rewardGold = selectedAmount.value;
+  }
+
+  if (rewardGold <= 0) {
+    alert('充值金额必须大于0');
+    return;
+  }
+
+  dialogRewardGold.value = rewardGold;
+  dialogPrice.value = rewardGold / 100; // price in CNY, can be float
+
+  showPaymentDialog.value = true;
+};
+
+const handlePaymentConfirm = async () => {
+  try {
+    const response = await createGoldOrder({
+      price: dialogPrice.value,
+      reward_gold: dialogRewardGold.value,
+    });
+    if (response.data.code === 200) {
+      window.open(response.data.data.pay_url, '_blank');
+      alert('订单创建成功，请在新页面完成支付。');
+    } else {
+      alert(`订单创建失败: ${response.data.message}`);
+    }
+  } catch (error: any) {
+    alert(`支付失败: ${error.message || '未知错误'}`);
+  }
+  showPaymentDialog.value = false;
+};
+
+const handlePaymentCancel = () => {
+  showPaymentDialog.value = false;
+};
 
 const vipPlans = computed(() => {
   const vipMark = userInfo.value?.vip_mark || 'vip_0';
