@@ -72,7 +72,7 @@
           <ul class="vip-benefits">
             <li v-for="benefit in plan.benefits" :key="benefit">{{ benefit }}</li>
           </ul>
-          <button class="text-btn">{{ plan.actionText }}</button>
+          <button class="text-btn" @click="handleVipAction(plan)">{{ plan.actionText }}</button>
         </div>
       </div>
     </section>
@@ -80,11 +80,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
-import { userInfo } from '@/utils/auth';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useMessage } from 'naive-ui';
 import PaymentDialog from '@/components/PaymentDialog.vue';
-import { createGoldOrder, getOrder } from '@/api/order';
+import { 
+  createGoldOrder, 
+  getOrder, 
+  getVipShopApi, 
+  buyVipApi,
+  upgradeVipApi,
+  type VipShopItem 
+} from '@/api/order';
 
+const message = useMessage();
 const presetAmounts = [600, 1000, 5000, 100000];
 const selectedAmount = ref<number | 'custom'>(600);
 const customAmount = ref<number | null>(null);
@@ -202,59 +210,102 @@ onUnmounted(() => {
   stopPolling();
 });
 
-const vipPlans = computed(() => {
-  const vipMark = userInfo.value?.vip_mark || 'vip_0';
-  
-  const basePlans = [
-    {
-      id: 'month_regular',
-      type: 'regular',
-      name: '月度会员',
-      price: 3000,
-      benefits: ['全站免费阅读', '专属标识', '双倍经验']
-    },
-    {
-      id: 'year_regular',
-      type: 'regular',
-      name: '年度会员',
-      price: 28000,
-      benefits: ['全站免费阅读', '专属标识', '三倍经验', '每月礼包']
-    },
-    {
-      id: 'month_super',
-      type: 'super',
-      name: '月度超级会员',
-      price: 8000,
-      benefits: ['全站免费阅读', '超级专属标识', '五倍经验', '专属客服']
-    },
-    {
-      id: 'year_super',
-      type: 'super',
-      name: '年度超级会员',
-      price: 88000,
-      benefits: ['全站免费阅读', '超级专属标识', '十倍经验', '专属客服', '节日豪礼']
-    }
-  ];
+const rawVipPlans = ref<VipShopItem[]>([]);
 
-  if (vipMark === 'vip_2') {
-    // 超级会员用户
-    return basePlans
-      .filter(plan => plan.type === 'super')
-      .map(plan => ({ ...plan, actionText: `续费${plan.name}` }));
-  } else if (vipMark === 'vip_1') {
-    // 普通会员用户
-    return basePlans.map(plan => {
-      if (plan.type === 'regular') {
-        return { ...plan, actionText: `续费${plan.name}` };
-      } else {
-        return { ...plan, actionText: '升级为超级会员' };
-      }
-    });
-  } else {
-    // 普通用户
-    return basePlans.map(plan => ({ ...plan, actionText: `购买${plan.name}` }));
+const fetchVipShop = async () => {
+  try {
+    const response = await getVipShopApi();
+    if (response.data.code === 200) {
+      rawVipPlans.value = response.data.data.shop || [];
+    } else {
+      console.error('获取VIP商品列表失败:', response.data.message);
+    }
+  } catch (error) {
+    console.error('获取VIP商品列表发生错误:', error);
   }
+};
+
+onMounted(() => {
+  fetchVipShop();
 });
+
+const vipPlans = computed(() => {
+  return rawVipPlans.value.map((plan, index) => {
+    let name = '';
+    let benefits: string[] = [];
+    let actionText = '';
+
+    // 解析名字和权益
+    if (plan.vip_level === 'vip_1') {
+      name = plan.duration === 'year' ? '年度会员' : '月度会员';
+      benefits = plan.duration === 'year' 
+        ? ['全站免费阅读', '专属标识', '三倍经验', '每月礼包']
+        : ['全站免费阅读', '专属标识', '双倍经验'];
+    } else if (plan.vip_level === 'vip_2') {
+      name = plan.duration === 'year' ? '年度超级会员' : '月度超级会员';
+      benefits = plan.duration === 'year'
+        ? ['全站免费阅读', '超级专属标识', '十倍经验', '专属客服', '节日豪礼']
+        : ['全站免费阅读', '超级专属标识', '五倍经验', '专属客服'];
+    }
+
+    // 解析按钮文字
+    if (plan.type === 'buy') {
+      actionText = `购买${name}`;
+    } else if (plan.type === 'renew') {
+      actionText = `续费${name}`;
+    } else if (plan.type === 'upgrade') {
+      actionText = `升级为${name}`;
+    }
+
+    return {
+      id: `${plan.type}_${plan.vip_level}_${plan.duration || 'none'}_${index}`,
+      type: plan.type,
+      name,
+      price: plan.price,
+      benefits,
+      actionText,
+      originalData: plan
+    };
+  });
+});
+
+const handleVipAction = async (plan: any) => {
+  const confirmMsg = `确定要花费 ${plan.price} 金豆${plan.actionText}吗？`;
+  if (!window.confirm(confirmMsg)) {
+    return;
+  }
+
+  try {
+    if (plan.type === 'upgrade') {
+      const response = await upgradeVipApi({
+        original_vip_level: 'vip_1',
+        target_vip_level: plan.originalData.vip_level,
+        price: plan.price
+      });
+      if (response.data.code === 200) {
+        message.success(`${plan.actionText}成功！`);
+        fetchVipShop();
+      } else {
+        message.error(`${plan.actionText}失败: ${response.data.message}`);
+      }
+    } else {
+      // buy or renew
+      const response = await buyVipApi({
+        duration: plan.originalData.duration,
+        price: plan.price,
+        vip_level: plan.originalData.vip_level
+      });
+      if (response.data.code === 200) {
+        message.success(`${plan.actionText}成功！`);
+        fetchVipShop();
+      } else {
+        message.error(`${plan.actionText}失败: ${response.data.message}`);
+      }
+    }
+  } catch (error: any) {
+    message.error(`${plan.actionText}失败: ${error.message || '未知错误'}`);
+  }
+};
 </script>
 
 <style scoped>
