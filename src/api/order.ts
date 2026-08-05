@@ -30,6 +30,17 @@ export const getOrder = (id: string) => {
   return request.get<ApiResponse<GetOrderResponseData>>(`/orders/${id}`);
 };
 
+export interface GetOrdersResponseData {
+  orders: GetOrderResponseData[];
+  page: number;
+  size: number;
+  count: number;
+}
+
+export const getOrders = (params?: { page?: number; size?: number }) => {
+  return request.get<ApiResponse<GetOrdersResponseData>>('/orders', { params });
+};
+
 export interface VipShopItem {
   type: string;
   vip_level: string;

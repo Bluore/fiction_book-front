@@ -47,7 +47,7 @@ import { useRouter } from 'vue-router'
 import { isLoggedIn, userInfo, setUserInfo, logout } from '@/utils/auth'
 import { getUserInfoApi } from '@/api/auth'
 import { useMessage, NIcon } from 'naive-ui'
-import { LogOutOutline, PersonOutline } from '@vicons/ionicons5'
+import { LogOutOutline, PersonOutline, ReaderOutline } from '@vicons/ionicons5'
 import './Header.css'
 
 const router = useRouter()
@@ -69,6 +69,11 @@ const userOptions = [
     icon: renderIcon(PersonOutline) // Using PersonOutline for now, can change if needed
   },
   {
+    label: '我的订单',
+    key: 'orders',
+    icon: renderIcon(ReaderOutline)
+  },
+  {
     label: '退出登录',
     key: 'logout',
     icon: renderIcon(LogOutOutline)
@@ -84,6 +89,8 @@ const handleSelect = (key: string) => {
     router.push('/space')
   } else if (key === 'creator') {
     router.push('/creator')
+  } else if (key === 'orders') {
+    router.push('/space#orders')
   }
 }
 

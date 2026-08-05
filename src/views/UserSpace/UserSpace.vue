@@ -44,7 +44,8 @@ const tabs = [
   { id: 'recent', name: '最近在读' },
   { id: 'bookshelf', name: '我的书架' },
   { id: 'profile', name: '我的信息' },
-  { id: 'recharge', name: '充值' }
+  { id: 'recharge', name: '充值' },
+  { id: 'orders', name: '订单' }
 ]
 
 const getDefaultTab = () => {
@@ -74,6 +75,7 @@ const activeComponent = computed(() => {
     case 'bookshelf': return defineAsyncComponent(() => import('./components/HomeBookshelf.vue'))
     case 'profile': return defineAsyncComponent(() => import('./components/HomeProfile.vue'))
     case 'recharge': return defineAsyncComponent(() => import('./components/HomeRecharge.vue'))
+    case 'orders': return defineAsyncComponent(() => import('./components/HomeOrders.vue'))
     default: return defineAsyncComponent(() => import('./components/HomeOverview.vue'))
   }
 })
