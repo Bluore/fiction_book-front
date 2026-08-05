@@ -27,7 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineAsyncComponent, onMounted } from 'vue'
+import { ref, computed, defineAsyncComponent, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import UserSpaceHeader from './components/UserSpaceHeader.vue'
 import Footer from '@/components/Footer/Footer.vue'
 import { mockUser } from '@/mocks/user'
@@ -35,7 +36,8 @@ import { getUserInfoApi } from '@/api/auth'
 import { userInfo, setUserInfo } from '@/utils/auth'
 import './UserSpace.css'
 
-const activeTab = ref('overview')
+const route = useRoute()
+const router = useRouter()
 
 const tabs = [
   { id: 'overview', name: '概览' },
@@ -44,6 +46,26 @@ const tabs = [
   { id: 'profile', name: '我的信息' },
   { id: 'recharge', name: '充值' }
 ]
+
+const getDefaultTab = () => {
+  const hash = route.hash.replace('#', '')
+  return tabs.some(t => t.id === hash) ? hash : 'overview'
+}
+
+const activeTab = ref(getDefaultTab())
+
+watch(activeTab, (newTab) => {
+  if (route.hash !== `#${newTab}`) {
+    router.replace({ hash: `#${newTab}` })
+  }
+})
+
+watch(() => route.hash, (newHash) => {
+  const hash = newHash.replace('#', '')
+  if (hash && tabs.some(t => t.id === hash) && activeTab.value !== hash) {
+    activeTab.value = hash
+  }
+})
 
 const activeComponent = computed(() => {
   switch (activeTab.value) {
@@ -72,5 +94,8 @@ const fetchUserInfo = async () => {
 
 onMounted(() => {
   fetchUserInfo()
+  if (!route.hash) {
+    router.replace({ hash: `#${activeTab.value}` })
+  }
 })
 </script>

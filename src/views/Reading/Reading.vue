@@ -270,7 +270,7 @@ const goToChapter = (direction: 'prev' | 'next') => {
 };
 
 const handleGoToVip = () => {
-  router.push('/space');
+  router.push('/space#recharge');
 };
 
 const handlePurchaseChapter = async () => {
