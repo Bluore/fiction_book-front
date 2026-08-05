@@ -46,6 +46,14 @@
       @confirm="handlePaymentConfirm"
     />
 
+    <ConfirmDialog
+      :show="showVipConfirmDialog"
+      title="VIP 操作确认"
+      :message="vipConfirmMessage"
+      @cancel="handleVipCancel"
+      @confirm="executeVipAction"
+    />
+
     <!-- Polling Status Display -->
     <div v-if="isPolling" class="polling-overlay">
       <div class="polling-content">
@@ -83,6 +91,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useMessage } from 'naive-ui';
 import PaymentDialog from '@/components/PaymentDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { 
   createGoldOrder, 
   getOrder, 
@@ -119,7 +128,7 @@ const handleRechargeClick = () => {
   }
 
   if (rewardGold <= 0) {
-    alert('充值金额必须大于0');
+    message.warning('充值金额必须大于0');
     return;
   }
 
@@ -142,14 +151,14 @@ const startPolling = (orderId: string) => {
         if (status !== 1) { // 1 is pending payment
           stopPolling();
           if (status === 3) {
-            alert('支付成功！');
+            message.success('支付成功！');
             // Optionally, refresh user info or G-coin balance
           } else if (status === -1) {
-            alert('订单已被取消。');
+            message.warning('订单已被取消。');
           } else if (status === -2) {
-            alert('订单超时未支付。');
+            message.warning('订单超时未支付。');
           } else {
-            alert(`订单状态: ${status}`);
+            message.info(`订单状态: ${status}`);
           }
         } else {
           pollingMessage.value = '订单待支付，请在新页面完成支付...';
@@ -164,7 +173,7 @@ const startPolling = (orderId: string) => {
 
   pollingTimeoutId = setTimeout(() => {
     stopPolling();
-    alert('长时间未支付，订单查询已停止。');
+    message.warning('长时间未支付，订单查询已停止。');
   }, POLLING_TIMEOUT);
 };
 
@@ -191,13 +200,13 @@ const handlePaymentConfirm = async () => {
       const payUrl = response.data.data.pay_url;
       const orderId = response.data.data.order_id;
       window.open(payUrl, '_blank');
-      alert('订单创建成功，请在新页面完成支付。');
+      message.success('订单创建成功，请在新页面完成支付。');
       startPolling(orderId);
     } else {
-      alert(`订单创建失败: ${response.data.message}`);
+      message.error(`订单创建失败: ${response.data.message}`);
     }
   } catch (error: any) {
-    alert(`支付失败: ${error.message || '未知错误'}`);
+    message.error(`支付失败: ${error.message || '未知错误'}`);
   }
   showPaymentDialog.value = false;
 };
@@ -269,11 +278,25 @@ const vipPlans = computed(() => {
   });
 });
 
-const handleVipAction = async (plan: any) => {
-  const confirmMsg = `确定要花费 ${plan.price} 金豆${plan.actionText}吗？`;
-  if (!window.confirm(confirmMsg)) {
-    return;
-  }
+const showVipConfirmDialog = ref(false);
+const vipConfirmMessage = ref('');
+const pendingVipPlan = ref<any>(null);
+
+const handleVipAction = (plan: any) => {
+  pendingVipPlan.value = plan;
+  vipConfirmMessage.value = `确定要花费 ${plan.price} G币${plan.actionText}吗？`;
+  showVipConfirmDialog.value = true;
+};
+
+const handleVipCancel = () => {
+  showVipConfirmDialog.value = false;
+  pendingVipPlan.value = null;
+};
+
+const executeVipAction = async () => {
+  const plan = pendingVipPlan.value;
+  if (!plan) return;
+  showVipConfirmDialog.value = false;
 
   try {
     if (plan.type === 'upgrade') {
